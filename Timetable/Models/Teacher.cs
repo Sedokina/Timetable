@@ -7,6 +7,7 @@ namespace DataModel.Models
     {
         public Teacher()
         {
+            GenTeachers = new HashSet<GenTeachers>();
             Raschasovka = new HashSet<Raschasovka>();
             RaschasovkaYears = new HashSet<RaschasovkaYears>();
             Schedule = new HashSet<Schedule>();
@@ -20,6 +21,7 @@ namespace DataModel.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        public ICollection<GenTeachers> GenTeachers { get; set; }
         public ICollection<Raschasovka> Raschasovka { get; set; }
         public ICollection<RaschasovkaYears> RaschasovkaYears { get; set; }
         public ICollection<Schedule> Schedule { get; set; }

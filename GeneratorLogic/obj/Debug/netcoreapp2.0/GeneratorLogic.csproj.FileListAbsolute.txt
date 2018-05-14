@@ -1,0 +1,12 @@
+D:\Timetable\Timetable\GeneratorLogic\obj\Debug\netcoreapp2.0\GeneratorLogic.csproj.CoreCompileInputs.cache
+D:\Timetable\Timetable\GeneratorLogic\obj\Debug\netcoreapp2.0\GeneratorLogic.AssemblyInfoInputs.cache
+D:\Timetable\Timetable\GeneratorLogic\obj\Debug\netcoreapp2.0\GeneratorLogic.AssemblyInfo.cs
+D:\Timetable\Timetable\GeneratorLogic\bin\Debug\netcoreapp2.0\GeneratorLogic.deps.json
+D:\Timetable\Timetable\GeneratorLogic\bin\Debug\netcoreapp2.0\GeneratorLogic.dll
+D:\Timetable\Timetable\GeneratorLogic\bin\Debug\netcoreapp2.0\GeneratorLogic.pdb
+D:\Timetable\Timetable\GeneratorLogic\bin\Debug\netcoreapp2.0\DataModel.dll
+D:\Timetable\Timetable\GeneratorLogic\bin\Debug\netcoreapp2.0\DataModel.pdb
+D:\Timetable\Timetable\GeneratorLogic\obj\Debug\netcoreapp2.0\GeneratorLogic.csprojResolveAssemblyReference.cache
+D:\Timetable\Timetable\GeneratorLogic\obj\Debug\netcoreapp2.0\GeneratorLogic.csproj.CopyComplete
+D:\Timetable\Timetable\GeneratorLogic\obj\Debug\netcoreapp2.0\GeneratorLogic.dll
+D:\Timetable\Timetable\GeneratorLogic\obj\Debug\netcoreapp2.0\GeneratorLogic.pdb

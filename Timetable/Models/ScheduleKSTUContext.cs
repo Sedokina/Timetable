@@ -26,6 +26,7 @@ namespace DataModel.Models
         public virtual DbSet<DjangoMigrations> DjangoMigrations { get; set; }
         public virtual DbSet<DjangoSession> DjangoSession { get; set; }
         public virtual DbSet<Faculty> Faculty { get; set; }
+        public virtual DbSet<GenTeachers> GenTeachers { get; set; }
         public virtual DbSet<Group> Group { get; set; }
         public virtual DbSet<Hour> Hour { get; set; }
         public virtual DbSet<Raschasovka> Raschasovka { get; set; }
@@ -496,6 +497,17 @@ namespace DataModel.Models
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<GenTeachers>(entity =>
+            {
+                entity.ToTable("Gen_Teachers");
+
+                entity.HasOne(d => d.Teacher)
+                    .WithMany(p => p.GenTeachers)
+                    .HasForeignKey(d => d.TeacherId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Gen_Teachers_Teacher");
             });
 
             modelBuilder.Entity<Group>(entity =>

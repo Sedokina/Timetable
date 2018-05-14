@@ -1,0 +1,43 @@
+﻿@model IEnumerable<DataModel.Models.Faculty>
+
+@{
+    ViewData["Title"] = "Timetable";
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<div class="alert alert-warning">
+    <strong>Внимание критерий "Лекционные занятия в первой половине смены" не выполняется</strong> Факультет -Имя-, Группа -Имя-, День -День недели-, Время -Время занятия-
+</div>
+
+<div class="alert alert-danger">
+    <strong>Критерий "Больше 1 занятия в день у группы" не выполняется</strong> Факультет -Имя-, Группа -Имя-, День -День недели-, Время -Время занятия-
+</div>
+
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Факультет
+                </th>
+                <th>
+                    Полное наименование факультета
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <a href="/home/timetable/@item.Id"> @Html.DisplayFor(modelItem => item.Name) </a>
+                    </td>
+                    <td>
+                        <a href="/home/timetable/@item.Id"> @Html.DisplayFor(modelItem => item.FullName)</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
