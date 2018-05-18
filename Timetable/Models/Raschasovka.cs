@@ -22,6 +22,7 @@ namespace DataModel.Models
         public long SubjectId { get; set; }
         public byte SubjectTypeId { get; set; }
         public byte NumberOfStudents { get; set; }
+        public byte SubjectClassId { get; set; }
 
         public Auditorium Auditorium { get; set; }
         public Course Course { get; set; }
@@ -29,6 +30,7 @@ namespace DataModel.Models
         public Group Group { get; set; }
         public Semesters Semester { get; set; }
         public Subject Subject { get; set; }
+        public SubjectClass SubjectClass { get; set; }
         public SubjectType SubjectType { get; set; }
         public Teacher Teacher { get; set; }
         public ICollection<RaschasovkaWeeks> RaschasovkaWeeks { get; set; }

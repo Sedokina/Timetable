@@ -26,6 +26,7 @@ namespace DataModel.Models
         public virtual DbSet<DjangoMigrations> DjangoMigrations { get; set; }
         public virtual DbSet<DjangoSession> DjangoSession { get; set; }
         public virtual DbSet<Faculty> Faculty { get; set; }
+        public virtual DbSet<GenSubjectClass> GenSubjectClass { get; set; }
         public virtual DbSet<GenTeachers> GenTeachers { get; set; }
         public virtual DbSet<Group> Group { get; set; }
         public virtual DbSet<Hour> Hour { get; set; }
@@ -37,6 +38,7 @@ namespace DataModel.Models
         public virtual DbSet<ScheduleYears> ScheduleYears { get; set; }
         public virtual DbSet<Semesters> Semesters { get; set; }
         public virtual DbSet<Subject> Subject { get; set; }
+        public virtual DbSet<SubjectClass> SubjectClass { get; set; }
         public virtual DbSet<SubjectDepartment> SubjectDepartment { get; set; }
         public virtual DbSet<SubjectType> SubjectType { get; set; }
         public virtual DbSet<Teacher> Teacher { get; set; }
@@ -44,6 +46,7 @@ namespace DataModel.Models
         public virtual DbSet<TeacherPersonalTime> TeacherPersonalTime { get; set; }
         public virtual DbSet<Week> Week { get; set; }
         public virtual DbSet<Years> Years { get; set; }
+        public virtual DbSet<TableWeight> TableWeights { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -499,6 +502,13 @@ namespace DataModel.Models
                     .HasMaxLength(100);
             });
 
+            modelBuilder.Entity<GenSubjectClass>(entity =>
+            {
+                entity.ToTable("Gen_SubjectClass");
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            });
+
             modelBuilder.Entity<GenTeachers>(entity =>
             {
                 entity.ToTable("Gen_Teachers");
@@ -560,6 +570,11 @@ namespace DataModel.Models
                     .HasForeignKey(d => d.SemesterId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Raschasovka_Semesters");
+
+                entity.HasOne(d => d.SubjectClass)
+                    .WithMany(p => p.Raschasovka)
+                    .HasForeignKey(d => d.SubjectClassId)
+                    .HasConstraintName("FK_Raschasovka_SubjectClass");
 
                 entity.HasOne(d => d.Subject)
                     .WithMany(p => p.Raschasovka)
@@ -811,6 +826,15 @@ namespace DataModel.Models
                     .HasMaxLength(150);
 
                 entity.Property(e => e.Name).HasMaxLength(15);
+            });
+
+            modelBuilder.Entity<SubjectClass>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(20);
             });
 
             modelBuilder.Entity<SubjectDepartment>(entity =>
