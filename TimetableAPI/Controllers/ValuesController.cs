@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using GeneratorLogic;
 
 namespace TimetableAPI.Controllers
 {
@@ -16,8 +15,7 @@ namespace TimetableAPI.Controllers
         {
             //GeneratorServices g = new GeneratorServices();
             //g.GetTeachers();
-            Generator gr = new Generator();
-            gr.Generate();
+            
             return new string[] { "value1", "value2" };
         }
 

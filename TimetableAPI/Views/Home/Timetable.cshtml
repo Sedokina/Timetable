@@ -3,67 +3,72 @@
 @{
     ViewData["Title"] = "Timetable";
 }
-
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 <h2>Timetable</h2>
+@{
+    var groupList = Model.GroupBy(m => m.Group).Select(m => m.First()).OrderBy(m => m.Group.Name).ToList();
+    var hoursList = Model.GroupBy(m => m.Hour).Select(m => m.First()).OrderBy(m => m.Hour.Number).ToList();
+    var daysList = Model.GroupBy(m => m.DayOfWeek).Select(m => m.First()).OrderBy(m => m.DayOfWeek.Number).ToList();
+}
+<table class="table-sm table-bordered table-striped">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Auditorium)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DayOfWeek)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Group)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hour)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Subject)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SubjectType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Teacher)
-            </th>
-            <th></th>
+            <th>Time</th>
+            @foreach (var group in groupList)
+            {
+                <th>@group.Group.Name</th>
+            }
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Auditorium.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DayOfWeek.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Group.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Hour.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Semester.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubjectType.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Teacher.Id)
-            </td>
+        @foreach (var day in daysList)
+        {
+        <tr class="bg-info">
+            <td><h4> @day.DayOfWeek.FullName </h4></td>
+            <td><h4> @day.DayOfWeek.FullName </h4></td>
+            <td><h4> @day.DayOfWeek.FullName </h4></td>
+            <td><h4> @day.DayOfWeek.FullName </h4></td>
+            <td><h4> @day.DayOfWeek.FullName </h4></td>
         </tr>
-}
+            @foreach (var hour in hoursList)
+            {
+                <tr>
+                    <th>@hour.Hour.Begin</th>
+                    @foreach (var group in groupList)
+                    {
+                        var item = Model.FirstOrDefault(m=>m.GroupId == group.GroupId && m.DayOfWeekId == day.DayOfWeekId && m.HourId==hour.HourId);
+                            @if (item != null)
+                            {
+                                <td>
+                                    @item.Subject.FullName + @item.SubjectType.Name + 
+                                    @item.Teacher.LastName + @item.Auditorium.Name
+                                    <p>
+                                        h = @item.HourId, d = @item.DayOfWeekId
+                                    </p>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+
+                            }
+                    }
+                    @*<td></td>
+                    <td></td>
+                    <td></td>*@
+                </tr>
+            }
+        }
     </tbody>
 </table>
+
+
+@*@foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Hour.Begin - @item.Hour.End</td>
+        </tr>
+    }*@

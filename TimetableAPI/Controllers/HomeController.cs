@@ -29,5 +29,13 @@ namespace TimetableAPI.Controllers
             GeneratorServices gs = new GeneratorServices();
             return View(gs.GetFacultySchedule(id));
         }
+
+        public ActionResult Generate()
+        {
+            Generator gr = new Generator();
+            gr.Generate();
+            ViewBag.result = "Schedule generated";
+            return View();
+        }
     }
 }

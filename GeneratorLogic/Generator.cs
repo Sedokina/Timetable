@@ -9,7 +9,7 @@ namespace GeneratorLogic
     public class Generator
     {
         GeneratorServices services;
-        public Generator() { services = new GeneratorServices(); }
+        public Generator() { services = new GeneratorServices(); ClearAll(); }
 
         public bool Generate()
         {
@@ -27,7 +27,7 @@ namespace GeneratorLogic
         {
             List<Raschasovka> Loads = GetGroupsLoadForCurrentSemester();
             List<Teacher> teachers = UniqueTeachers(Loads);
-            //TeachersRate(teachers);
+            TeachersRate(teachers);
             services.GetTeachersWeight();
 
             var query = Loads.Join(services.GetTeachersWeight(), l => l.TeacherId, w => w.Id, (l, w) =>
@@ -98,14 +98,14 @@ namespace GeneratorLogic
                     }
                     Console.WriteLine();
                 }
-
+                
                 foreach(TimeslotsCriteriaWeight tw in timeslotsWeight)
                 {
                     Console.WriteLine(tw.AllCriteriaWeight);
                     tw.criteriaWeight.ForEach(cw => tw.AllCriteriaWeight += cw.Weight * cw.criteria.Rate);
                 }
                 timeslotsWeight = timeslotsWeight.OrderByDescending(tw => tw.AllCriteriaWeight).ToList();
-
+                services.AddScheduleWeeks(services.AddScheduleTimeslot(load.load, timeslotsWeight.FirstOrDefault()), load.load.Id);
                 
                 Console.WriteLine();
             }
@@ -145,7 +145,7 @@ namespace GeneratorLogic
             List<CriteriaRate> rate = new List<CriteriaRate>();
             foreach (var t in tslots)
             {
-                int gap = 2 - groupSchedule.Where(s => s.DayOfWeekId == t.DayId)
+                int gap = groupSchedule.Where(s => s.DayOfWeekId == t.DayId)
                     .Where(s => s.Hour.Number == t.HourNumber + 1 || s.Hour.Number == t.HourNumber - 1).Count();
                 rate.Add(new CriteriaRate { timeslots = new Timeslots{ DayId = t.DayId, HourId = t.HourId, AuditoriumId = t.AuditoriumId }, Rate = gap });
             }
@@ -172,10 +172,14 @@ namespace GeneratorLogic
         {
             services.InsertGenTeachers(teachers);
         }
-
-        //List<Raschasovka> r = db.Raschasovka.ToList();
-        //List<TableWeight> w = db.Set<TableWeight>().FromSql("dbo.GetTeachersWeight").ToList();
-        //var query = r.Join(w, ras => ras.TeacherId, wei => wei.Id, (ras, wei) => new { Raschasovka = ras, TableWeight = wei });
+        
+        private void ClearAll()
+        {
+            services.GenTeachersClear();
+            services.GenTimeslotsClear();
+            services.ScheduleWeeksClear();
+            services.ScheduleClear();
+        }
 
         #region Get
 

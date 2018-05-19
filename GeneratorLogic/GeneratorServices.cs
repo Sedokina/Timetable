@@ -124,7 +124,6 @@ namespace GeneratorLogic
             {
                 ///////!!!!!!!
                 db.Database.ExecuteSqlCommand("Delete From Gen_Teachers");
-                db.Database.ExecuteSqlCommand("DBCC CHECKIDENT(Gen_Teachers, RESEED, 1)");
                 try
                 {
                     foreach (Teacher teach in teachers)
@@ -205,9 +204,89 @@ namespace GeneratorLogic
             return db.Semesters.FirstOrDefault(s=>s.Name == semesterName);
         }
 
-        private void GenTimeslotsClear()
+        public void GenTimeslotsClear()
         {
-            db.Database.ExecuteSqlCommand("Truncate Table Gen_Timeslots");
+            using (var dbContextTransaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    db.Database.ExecuteSqlCommand("Truncate Table Gen_Timeslots");
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                    throw;
+                }
+            }
+        }
+        public void GenTeachersClear()
+        {
+            using (var dbContextTransaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    db.Database.ExecuteSqlCommand("Truncate Table Gen_Teachers");
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        public void GenSubjectClassClear()
+        {
+            using (var dbContextTransaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    db.Database.ExecuteSqlCommand("Truncate Table Gen_SubjectClass");
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        public void ScheduleWeeksClear()
+        {
+            using (var dbContextTransaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    db.Database.ExecuteSqlCommand("Truncate Table ScheduleWeeks");
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        public void ScheduleClear()
+        {
+            using (var dbContextTransaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    db.Database.ExecuteSqlCommand("Delete From Schedule");
+                    db.Database.ExecuteSqlCommand("DBCC CHECKIDENT(Schedule, RESEED, 0)");
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                    throw;
+                }
+            }
         }
 
         public bool InsertGenTimeslots(List<CriteriaRate> timeslots, int i)
@@ -243,13 +322,14 @@ namespace GeneratorLogic
             return true;
         }
 
-        public bool AddScheduleTimeslot(Raschasovka load, TimeslotsCriteriaWeight timeslot)
+        public int AddScheduleTimeslot(Raschasovka load, TimeslotsCriteriaWeight timeslot)
         {
+            Schedule schedule;
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    db.Schedule.Add(new Schedule
+                    schedule = new Schedule
                     {
                         GroupId = load.GroupId,
                         TeacherId = load.TeacherId,
@@ -259,8 +339,32 @@ namespace GeneratorLogic
                         HourId = timeslot.HourId,
                         DayOfWeekId = timeslot.DayId,
                         AuditoriumId = timeslot.AuditoriumId,
-                        
-                    });
+
+                    };
+                    db.Schedule.Add(schedule);
+                    db.SaveChanges();
+                    dbContextTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                    throw;
+                }
+            }
+            return schedule.Id;
+        }
+
+        public bool AddScheduleWeeks(int scheduleId, int loadId)
+        {
+            using (var dbContextTransaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    List<ScheduleWeeks> scheduleWeeks = db.RaschasovkaWeeks.Where(rw=>rw.RaschasovkaId == loadId)
+                        .Select(rw=> new ScheduleWeeks { ScheduleId = scheduleId, WeekId = rw.WeekId}).ToList();
+                    db.ScheduleWeeks.AddRange(scheduleWeeks);
+                    db.SaveChanges();
+                    dbContextTransaction.Commit();
                 }
                 catch (Exception ex)
                 {
@@ -270,6 +374,7 @@ namespace GeneratorLogic
             }
             return true;
         }
+
 
     }
 }

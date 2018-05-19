@@ -36,6 +36,7 @@ namespace DataModel.Models
         public virtual DbSet<RaschasovkaYears> RaschasovkaYears { get; set; }
         public virtual DbSet<Schedule> Schedule { get; set; }
         public virtual DbSet<ScheduleRealization> ScheduleRealization { get; set; }
+        public virtual DbSet<ScheduleWeeks> ScheduleWeeks { get; set; }
         public virtual DbSet<ScheduleYears> ScheduleYears { get; set; }
         public virtual DbSet<Semesters> Semesters { get; set; }
         public virtual DbSet<Subject> Subject { get; set; }
@@ -49,14 +50,13 @@ namespace DataModel.Models
         public virtual DbSet<Years> Years { get; set; }
         public virtual DbSet<TableWeight> TableWeight { get; set; }
         public virtual DbSet<TimeslotsWeight> TimeslotsWeight { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-AIP5R7G; Initial Catalog=ScheduleKSTU; Integrated Security=true; MultipleActiveResultSets=true; User ID=sa; Password=aezakmi");
-                optionsBuilder.EnableSensitiveDataLogging();
             }
         }
 
@@ -753,6 +753,21 @@ namespace DataModel.Models
                     .WithMany(p => p.ScheduleRealization)
                     .HasForeignKey(d => d.ScheduleId)
                     .HasConstraintName("FK_ScheduleRealization_Schedule");
+            });
+
+            modelBuilder.Entity<ScheduleWeeks>(entity =>
+            {
+                entity.HasOne(d => d.Schedule)
+                    .WithMany(p => p.ScheduleWeeks)
+                    .HasForeignKey(d => d.ScheduleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ScheduleWeeks_Schedule");
+
+                entity.HasOne(d => d.Week)
+                    .WithMany(p => p.ScheduleWeeks)
+                    .HasForeignKey(d => d.WeekId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SchdeuleWeeks_Week");
             });
 
             modelBuilder.Entity<ScheduleYears>(entity =>

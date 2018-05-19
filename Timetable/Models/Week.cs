@@ -8,6 +8,7 @@ namespace DataModel.Models
         public Week()
         {
             RaschasovkaWeeks = new HashSet<RaschasovkaWeeks>();
+            ScheduleWeeks = new HashSet<ScheduleWeeks>();
             ScheduleYears = new HashSet<ScheduleYears>();
         }
 
@@ -16,6 +17,7 @@ namespace DataModel.Models
         public bool Znamenatel { get; set; }
 
         public ICollection<RaschasovkaWeeks> RaschasovkaWeeks { get; set; }
+        public ICollection<ScheduleWeeks> ScheduleWeeks { get; set; }
         public ICollection<ScheduleYears> ScheduleYears { get; set; }
     }
 }
