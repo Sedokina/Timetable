@@ -162,6 +162,11 @@ namespace GeneratorLogic
             return db.Set<TableWeight>().FromSql("dbo.GetSubjectClassWeight").ToList();
         }
 
+        public List<TimeslotsWeight> GetTimeslotsWeight()
+        {
+            return db.Set<TimeslotsWeight>().FromSql("dbo.GetTimeslotsWeight").ToList();
+        }
+
         public List<Schedule> GetTeacherSchedule(int teacherId)
         {
             return db.Schedule.Where(s => s.TeacherId == teacherId && s.SemesterId == GetCurrentSemester().Id)
@@ -200,25 +205,62 @@ namespace GeneratorLogic
             return db.Semesters.FirstOrDefault(s=>s.Name == semesterName);
         }
 
-        public bool InsertGenTimeslots(List<CriteriaRate> criteriaRate)
+        private void GenTimeslotsClear()
+        {
+            db.Database.ExecuteSqlCommand("Truncate Table Gen_Timeslots");
+        }
+
+        public bool InsertGenTimeslots(List<CriteriaRate> timeslots, int i)
         {
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {
                 ///////!!!!!!!
                 db.Database.ExecuteSqlCommand("Delete From Gen_Timeslots");
-                db.Database.ExecuteSqlCommand("DBCC CHECKIDENT(Gen_Timeslots, RESEED, 1)");
+                
                 try
                 {
-                    foreach (CriteriaRate cr in criteriaRate)
+                    foreach (CriteriaRate cr in timeslots)
                     {
-                        //db.GenTeachers.Add(new GenTeachers
-                        //{
-                        //    TeacherId = teach.Id,
-                        //    Rate = CountTeacherPersonalTime(teach.Id) + 1
-                        //});
+
+                        db.GenTimeslots.Add(new GenTimeslots
+                        {
+                            AuditoriumId = cr.timeslots.AuditoriumId,
+                            DayId = cr.timeslots.DayId,
+                            HourId = cr.timeslots.HourId,
+                            Rate = cr.Rate + 1
+                        });
                     }
+
                     db.SaveChanges();
                     dbContextTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                    throw;
+                }
+            }
+            return true;
+        }
+
+        public bool AddScheduleTimeslot(Raschasovka load, TimeslotsCriteriaWeight timeslot)
+        {
+            using (var dbContextTransaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    db.Schedule.Add(new Schedule
+                    {
+                        GroupId = load.GroupId,
+                        TeacherId = load.TeacherId,
+                        SubjectId = load.SubjectId,
+                        SubjectTypeId = load.SubjectTypeId,
+                        SemesterId = GetCurrentSemester().Id,
+                        HourId = timeslot.HourId,
+                        DayOfWeekId = timeslot.DayId,
+                        AuditoriumId = timeslot.AuditoriumId,
+                        
+                    });
                 }
                 catch (Exception ex)
                 {

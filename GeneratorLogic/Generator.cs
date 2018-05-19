@@ -41,7 +41,8 @@ namespace GeneratorLogic
             float TeacherPriority = 10;
             var LoadWeighted = LoadWithWeights.Select(l => new { l.load, FullWeight = l.SubjectClassWeight * SubjectClassPriority + 
                 l.TeacherWeight * TeacherPriority }).OrderByDescending(l => l.FullWeight);
-
+            //!!!!!!! надо исключить таймслоты по неделям, т.е. запихнуть сюда таймслоты которые доступны
+            //для всех недель которые нужны для занятий
             foreach (var load in LoadWeighted)
             {
                 var Timeslots = services.GetHours().SelectMany(x => services.GetDaysOfWeek().Select(y => new { HourId = x.Id, DayId = y.Id })).ToList();
@@ -73,20 +74,49 @@ namespace GeneratorLogic
 
                 var criteria = services.GetCriteria();
 
-                foreach(Criteria c in criteria)
+                List<TimeslotsCriteriaWeight> timeslotsWeight = FinalTimeslots.Select(ts =>
+                    new TimeslotsCriteriaWeight {
+                        AuditoriumId = ts.AuditoriumId,
+                        DayId = ts.DayId,
+                        HourId = ts.HourId
+                    }).ToList();
+                Console.WriteLine();
+                foreach (Criteria c in criteria)
                 {
-                    UseCriteria(c, FinalTimeslots, load.load);
+
+                    foreach (var criteriaList in UseCriteria(c, FinalTimeslots, load.load).ToList())
+                    {
+                        foreach(var timeslot in timeslotsWeight.Where(ts => ts.DayId == criteriaList.DayId &&
+                            ts.HourId == criteriaList.HourId && ts.AuditoriumId == criteriaList.AuditoriumId).ToList())
+                        {
+                            timeslot.criteriaWeight.Add(new CriteriaWeight
+                            {
+                                criteria = c,
+                                Weight = criteriaList.Weight
+                            });
+                        }
+                    }
+                    Console.WriteLine();
                 }
 
+                foreach(TimeslotsCriteriaWeight tw in timeslotsWeight)
+                {
+                    Console.WriteLine(tw.AllCriteriaWeight);
+                    tw.criteriaWeight.ForEach(cw => tw.AllCriteriaWeight += cw.Weight * cw.criteria.Rate);
+                }
+                timeslotsWeight = timeslotsWeight.OrderByDescending(tw => tw.AllCriteriaWeight).ToList();
+
+                
+                Console.WriteLine();
             }
             
 
             Console.WriteLine();
         }
 
-        private void UseCriteria(Criteria criteria, List<Timeslots> timeslots, Raschasovka load)
+        private List<TimeslotsWeight> UseCriteria(Criteria criteria, List<Timeslots> timeslots, Raschasovka load)
         {
-            List<CriteriaRate> criteriaRate;
+            List<CriteriaRate> criteriaRate = new List<CriteriaRate>();
             switch (criteria.Name)
             {
                 case "MinGap":
@@ -99,7 +129,13 @@ namespace GeneratorLogic
                 default:
                     break;
             }
-            //services.InsertGenTimeslots();
+
+            if (criteriaRate.Count != 0)
+            {
+                services.InsertGenTimeslots(criteriaRate, load.Id);
+                return services.GetTimeslotsWeight();
+            }
+            return new List<TimeslotsWeight>();
         }
 
         private List<CriteriaRate> CheckGap(Raschasovka load, List<Timeslots> timeslots)
@@ -109,7 +145,7 @@ namespace GeneratorLogic
             List<CriteriaRate> rate = new List<CriteriaRate>();
             foreach (var t in tslots)
             {
-                int gap = groupSchedule.Where(s => s.DayOfWeekId == t.DayId)
+                int gap = 2 - groupSchedule.Where(s => s.DayOfWeekId == t.DayId)
                     .Where(s => s.Hour.Number == t.HourNumber + 1 || s.Hour.Number == t.HourNumber - 1).Count();
                 rate.Add(new CriteriaRate { timeslots = new Timeslots{ DayId = t.DayId, HourId = t.HourId, AuditoriumId = t.AuditoriumId }, Rate = gap });
             }

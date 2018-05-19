@@ -28,6 +28,7 @@ namespace DataModel.Models
         public virtual DbSet<Faculty> Faculty { get; set; }
         public virtual DbSet<GenSubjectClass> GenSubjectClass { get; set; }
         public virtual DbSet<GenTeachers> GenTeachers { get; set; }
+        public virtual DbSet<GenTimeslots> GenTimeslots { get; set; }
         public virtual DbSet<Group> Group { get; set; }
         public virtual DbSet<Hour> Hour { get; set; }
         public virtual DbSet<Raschasovka> Raschasovka { get; set; }
@@ -46,14 +47,16 @@ namespace DataModel.Models
         public virtual DbSet<TeacherPersonalTime> TeacherPersonalTime { get; set; }
         public virtual DbSet<Week> Week { get; set; }
         public virtual DbSet<Years> Years { get; set; }
-        public virtual DbSet<TableWeight> TableWeights { get; set; }
-
+        public virtual DbSet<TableWeight> TableWeight { get; set; }
+        public virtual DbSet<TimeslotsWeight> TimeslotsWeight { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-AIP5R7G; Initial Catalog=ScheduleKSTU; Integrated Security=true; MultipleActiveResultSets=true; User ID=sa; Password=aezakmi");
+                optionsBuilder.EnableSensitiveDataLogging();
             }
         }
 
@@ -68,6 +71,7 @@ namespace DataModel.Models
                 entity.HasOne(d => d.AuditoriumType)
                     .WithMany(p => p.Auditorium)
                     .HasForeignKey(d => d.AuditoriumTypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Auditorium_AuditoriumType");
 
                 entity.HasOne(d => d.Building)
@@ -520,6 +524,11 @@ namespace DataModel.Models
                     .HasConstraintName("FK_Gen_Teachers_Teacher");
             });
 
+            modelBuilder.Entity<GenTimeslots>(entity =>
+            {
+                entity.ToTable("Gen_Timeslots");
+            });
+
             modelBuilder.Entity<Group>(entity =>
             {
                 entity.Property(e => e.Name)
@@ -574,6 +583,7 @@ namespace DataModel.Models
                 entity.HasOne(d => d.SubjectClass)
                     .WithMany(p => p.Raschasovka)
                     .HasForeignKey(d => d.SubjectClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Raschasovka_SubjectClass");
 
                 entity.HasOne(d => d.Subject)
