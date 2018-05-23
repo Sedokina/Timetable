@@ -54,8 +54,15 @@ namespace GeneratorLogic
                 var DepartmentAuditoriums = services.GetDepartmentAuditoriumsForSubjectType(load.load.DepartmentId, load.load.SubjectTypeId);
                 List<Timeslots> FinalTimeslots = DepartmentAuditoriums.SelectMany(a => Timeslots.Select(t => new Timeslots { HourId = t.HourId, DayId = t.DayId, AuditoriumId = a.Id })).ToList();
                 //Исключение таймслотов аудиторий из доступных тайслотов
-                DepartmentAuditoriums.ToList().ForEach(a => FinalTimeslots.Except(services.GetAuditoriumSchedule(a.Id)
-                   .Select(at => new Timeslots { HourId = at.HourId, DayId = at.DayOfWeekId, AuditoriumId = at.AuditoriumId })));
+                List<Timeslots> AuditoriumSchedule = new List<Timeslots>();
+                DepartmentAuditoriums.ToList().ForEach(a => AuditoriumSchedule.AddRange(services.GetAuditoriumSchedule(a.Id)
+                  .Select(at => new Timeslots { HourId = at.HourId, DayId = at.DayOfWeekId, AuditoriumId = at.AuditoriumId }).ToList()));
+                foreach(Timeslots ts in AuditoriumSchedule)
+                {
+                    FinalTimeslots.Remove(FinalTimeslots.FirstOrDefault(ft => ft.DayId == ts.DayId && ft.HourId == ts.HourId && ft.AuditoriumId == ts.AuditoriumId));
+                }
+                //DepartmentAuditoriums.ToList().ForEach(a => FinalTimeslots = FinalTimeslots.Except(services.GetAuditoriumSchedule(a.Id)
+                //   .Select(at => new Timeslots { HourId = at.HourId, DayId = at.DayOfWeekId, AuditoriumId = at.AuditoriumId })).ToList());
 
                 //Если часов для занятия > 2, то исключить таймслоты без смежных пустых таймслотов
                 //потом изменить под недели
@@ -122,9 +129,11 @@ namespace GeneratorLogic
                 case "MinGap":
                     criteriaRate = CheckGap(load, timeslots);
                     break;
-                case "MoreThenOne":
+                case "MoreThanOne":
+                    criteriaRate = MoreThanOneSubject(load, timeslots);
                     break;
                 case "LessThenFour":
+                    criteriaRate = LessThenFourSubject(load, timeslots);
                     break;
                 default:
                     break;
@@ -153,6 +162,54 @@ namespace GeneratorLogic
             return rate;
         }
 
+        private List<CriteriaRate> MoreThanOneSubject(Raschasovka load, List<Timeslots> timeslots)
+        {
+            List<CriteriaRate> rate = new List<CriteriaRate>();
+            var groupSchedule = services.GetGroupSchedule(load.GroupId);
+            foreach(var day in services.GetDaysOfWeek())
+            {
+                if (groupSchedule.Where(gs => gs.DayOfWeekId == day.Id).Count() <= 1)
+                {
+                    rate.AddRange(timeslots.Where(ts => ts.DayId == day.Id).Select(ts => new CriteriaRate
+                    {
+                        timeslots = new Timeslots
+                        {
+                            DayId = ts.DayId, HourId = ts.HourId, AuditoriumId = ts.AuditoriumId
+                        }
+                    , Rate = 1
+                    }));
+                }
+            }
+
+            return rate;
+        }
+
+        private List<CriteriaRate> LessThenFourSubject(Raschasovka load, List<Timeslots> timeslots)
+        {
+            List<CriteriaRate> rate = new List<CriteriaRate>();
+            var groupSchedule = services.GetGroupSchedule(load.GroupId);
+            int rateValue = 0;
+            foreach (var day in services.GetDaysOfWeek())
+            {
+                if (groupSchedule.Where(gs => gs.DayOfWeekId == day.Id).Count() >= 4)
+                    rateValue = 0;
+                else
+                    rateValue = 1;
+                rate.AddRange(timeslots.Where(ts => ts.DayId == day.Id).Select(ts => new CriteriaRate
+                {
+                    timeslots = new Timeslots
+                    {
+                        DayId = ts.DayId,
+                        HourId = ts.HourId,
+                        AuditoriumId = ts.AuditoriumId
+                    }
+                    ,
+                    Rate = rateValue
+                }));
+            }
+
+            return rate;
+        }
 
         //Список групп из расчасовки за текущий семетр отсортированных по курсу
         private List<Raschasovka> GetGroupsLoadForCurrentSemester()
