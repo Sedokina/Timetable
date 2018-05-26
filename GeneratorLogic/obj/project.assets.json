@@ -2341,7 +2341,7 @@
           "lib/netstandard1.3/System.Xml.XPath.XDocument.dll": {}
         }
       },
-      "DataModel/1.0.0": {
+      "DomainModel/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
         "dependencies": {
@@ -2350,10 +2350,34 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.0.4"
         },
         "compile": {
-          "bin/placeholder/DataModel.dll": {}
+          "bin/placeholder/DomainModel.dll": {}
         },
         "runtime": {
-          "bin/placeholder/DataModel.dll": {}
+          "bin/placeholder/DomainModel.dll": {}
+        }
+      },
+      "GeneratorService/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "compile": {
+          "bin/placeholder/GeneratorService.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/GeneratorService.dll": {}
+        }
+      },
+      "GeneratorServiceServer/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "dependencies": {
+          "DomainModel": "1.0.0",
+          "GeneratorService": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/GeneratorServiceServer.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/GeneratorServiceServer.dll": {}
         }
       }
     }
@@ -7486,15 +7510,26 @@
         "system.xml.xpath.xdocument.nuspec"
       ]
     },
-    "DataModel/1.0.0": {
+    "DomainModel/1.0.0": {
       "type": "project",
-      "path": "../Timetable/DataModel.csproj",
-      "msbuildProject": "../Timetable/DataModel.csproj"
+      "path": "../DomainModel/DomainModel.csproj",
+      "msbuildProject": "../DomainModel/DomainModel.csproj"
+    },
+    "GeneratorService/1.0.0": {
+      "type": "project",
+      "path": "../GeneratorService/GeneratorService.csproj",
+      "msbuildProject": "../GeneratorService/GeneratorService.csproj"
+    },
+    "GeneratorServiceServer/1.0.0": {
+      "type": "project",
+      "path": "../GeneratorServiceServer/GeneratorServiceServer.csproj",
+      "msbuildProject": "../GeneratorServiceServer/GeneratorServiceServer.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
-      "DataModel >= 1.0.0",
+      "DomainModel >= 1.0.0",
+      "GeneratorServiceServer >= 1.0.0",
       "Microsoft.NETCore.App >= 2.0.0"
     ]
   },
@@ -7531,8 +7566,11 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "D:\\Timetable\\Timetable\\Timetable\\DataModel.csproj": {
-              "projectPath": "D:\\Timetable\\Timetable\\Timetable\\DataModel.csproj"
+            "D:\\Timetable\\Timetable\\DomainModel\\DomainModel.csproj": {
+              "projectPath": "D:\\Timetable\\Timetable\\DomainModel\\DomainModel.csproj"
+            },
+            "D:\\Timetable\\Timetable\\GeneratorServiceServer\\GeneratorServiceServer.csproj": {
+              "projectPath": "D:\\Timetable\\Timetable\\GeneratorServiceServer\\GeneratorServiceServer.csproj"
             }
           }
         }

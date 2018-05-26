@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewData["Title"] = "Criteria";
+}
+
+<title>Критерии</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<div class="container">
+    <h2>Критерии</h2>
+    @*<p>The .table-hover class enables a hover state on table rows:</p>*@
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Наименование</th>
+                <th>Приоритет</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Минимально кол-во окон у групп</td>
+                <td><input type="text" value="10" /></td>
+            </tr>
+            <tr>
+                <td>Больше 1 занятия в день у групп</td>
+                <td><input type="text" value="10" /></td>
+            </tr>
+            <tr>
+                <td>Меньше 4 занятий в день у групп</td>
+                <td><input type="text" value="10" /></td>
+            </tr>
+            <tr>
+                <td>Лекционные занятия в первой половине смены</td>
+                <td><input type="text" value="3" /></td>
+            </tr>
+            <tr>
+                <td>Лабораторные занятия после лекционных (в смене)</td>
+                <td><input type="text" value="3" /></td>
+            </tr>
+            <tr>
+                <td>Практические занятия после лабораторных (в смене)</td>
+                <td><input type="text" value="3" /></td>
+            </tr>
+            <tr>
+                <td>Время занятий с учетом смены</td>
+                <td><input type="text" value="8" /></td>
+            </tr>
+            <tr>
+                <td>Равномерность занятий групп по дням недели</td>
+                <td><input type="text" value="5" /></td>
+            </tr>
+            <tr>
+                <td>Минимально кол-во окон у преподавателя</td>
+                <td><input type="text" value="0" /></td>
+            </tr>
+            <tr>
+                <td>Больше 1 занятия в день у преподавателя</td>
+                <td><input type="text" value="6" /></td>
+            </tr>
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-primary">Сохранить</button>
+</div>

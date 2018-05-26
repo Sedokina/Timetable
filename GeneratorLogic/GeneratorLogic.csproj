@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Timetable\DataModel.csproj" />
+    <ProjectReference Include="..\DomainModel\DomainModel.csproj" />
+    <ProjectReference Include="..\GeneratorServiceServer\GeneratorServiceServer.csproj" />
   </ItemGroup>
 
 </Project>

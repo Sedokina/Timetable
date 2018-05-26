@@ -13,9 +13,6 @@ namespace TimetableAPI.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            //GeneratorServices g = new GeneratorServices();
-            //g.GetTeachers();
-            
             return new string[] { "value1", "value2" };
         }
 
