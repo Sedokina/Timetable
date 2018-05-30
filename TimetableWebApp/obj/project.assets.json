@@ -5071,22 +5071,11 @@
           "bin/placeholder/GeneratorLogic.dll": {}
         }
       },
-      "GeneratorService/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v2.0",
-        "compile": {
-          "bin/placeholder/GeneratorService.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/GeneratorService.dll": {}
-        }
-      },
       "GeneratorServiceServer/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
         "dependencies": {
-          "DomainModel": "1.0.0",
-          "GeneratorService": "1.0.0"
+          "DomainModel": "1.0.0"
         },
         "compile": {
           "bin/placeholder/GeneratorServiceServer.dll": {}
@@ -13296,11 +13285,6 @@
       "type": "project",
       "path": "../GeneratorLogic/GeneratorLogic.csproj",
       "msbuildProject": "../GeneratorLogic/GeneratorLogic.csproj"
-    },
-    "GeneratorService/1.0.0": {
-      "type": "project",
-      "path": "../GeneratorService/GeneratorService.csproj",
-      "msbuildProject": "../GeneratorService/GeneratorService.csproj"
     },
     "GeneratorServiceServer/1.0.0": {
       "type": "project",

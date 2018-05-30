@@ -19,3 +19,6 @@ D:\Timetable\Timetable\GeneratorService\obj\Debug\netcoreapp2.0\GeneratorService
 D:\Timetable\Timetable\GeneratorService\obj\Debug\netcoreapp2.0\GeneratorService.csproj.CoreCompileInputs.cache
 D:\Timetable\Timetable\GeneratorService\obj\Debug\netcoreapp2.0\GeneratorService.AssemblyInfoInputs.cache
 D:\Timetable\Timetable\GeneratorService\obj\Debug\netcoreapp2.0\GeneratorService.AssemblyInfo.cs
+D:\Timetable\Timetable\GeneratorService\bin\Debug\netcoreapp2.0\DomainModel.dll
+D:\Timetable\Timetable\GeneratorService\bin\Debug\netcoreapp2.0\DomainModel.pdb
+D:\Timetable\Timetable\GeneratorService\obj\Debug\netcoreapp2.0\GeneratorService.csproj.CopyComplete

@@ -1,6 +1,4 @@
 ﻿using DomainModel.Domain;
-using GeneratorService;
-using GeneratorService.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +7,7 @@ using System.Text;
 
 namespace GeneratorServiceServer
 {
-    public partial class GeneratorServiceImpl : IGeneratorService
+    public partial class GeneratorServiceImpl
     {
         ScheduleKSTUContext db;
         public GeneratorServiceImpl()
@@ -21,55 +19,25 @@ namespace GeneratorServiceServer
          * Load
          *  
          */
-        public List<LoadData> GetFlawsFromLoad()
+        public List<Raschasovka> GetFlawsFromLoad()
         {
-            return db.Raschasovka.Where(load => load.Potok != null).Select(l => new LoadData
-            {
-                Id = l.Id,
-                AuditoriumId = l.AuditoriumId,
-                CourseId = l.CourseId,
-                DepartmentId = l.DepartmentId,
-                GroupId = l.GroupId,
-                NumberOfStudents = l.NumberOfStudents,
-                Flaw = l.Potok,
-                SemesterId = l.SemesterId,
-                SubjectClassId = l.SubjectClassId,
-                SubjectId = l.SubjectId,
-                SubjectTypeId = l.SubjectTypeId,
-                TeacherId = l.TeacherId,
-                TotalHoursForSemestr = l.TotalHoursForSemestr
-            }).ToList();
+            return db.Raschasovka.Where(load => load.Potok != null).ToList();
         }
 
-        public List<LoadData> GetGroupsLoadForCurrentSemester()
+        public List<Raschasovka> GetGroupsLoadForCurrentSemester()
         {
 
             return db.Raschasovka.Where(load => load.Semester.Id == GetSemesterByName("Весенний").Id).
-                OrderBy(load => load.Course.Number).Select(l => new LoadData
-                {
-                    Id = l.Id,
-                    AuditoriumId = l.AuditoriumId,
-                    CourseId = l.CourseId,
-                    DepartmentId = l.DepartmentId,
-                    GroupId = l.GroupId,
-                    NumberOfStudents = l.NumberOfStudents,
-                    Flaw = l.Potok,
-                    SemesterId = l.SemesterId,
-                    SubjectClassId = l.SubjectClassId,
-                    SubjectId = l.SubjectId,
-                    SubjectTypeId = l.SubjectTypeId,
-                    TeacherId = l.TeacherId,
-                    TotalHoursForSemestr = l.TotalHoursForSemestr
-                }).ToList();
+                OrderBy(load => load.Course.Number).ToList();
         }
         /*
          * Semester
          * 
          */
-        public SemestersData GetSemesterByName(string semesterName)
+        public Semesters GetSemesterByName(string semesterName)
         {
             Semesters semester = db.Semesters.FirstOrDefault(sem => sem.Name == semesterName);
-            return new SemestersData
+            return new Semesters
             {
                 Id = semester.Id,
                 Name = semester.Name
@@ -91,9 +59,9 @@ namespace GeneratorServiceServer
          * 
          */
 
-        public List<AuditoriumData> GetAuditoriumsForDepartment(short departmentId)
+        public List<Auditorium> GetAuditoriumsForDepartment(short departmentId)
         {
-            return db.Auditorium.Where(a => a.DepartmentId == departmentId).Select(a => new AuditoriumData
+            return db.Auditorium.Where(a => a.DepartmentId == departmentId).Select(a => new Auditorium
             {
                 Id = a.Id,
                 AuditoriumTypeId = a.AuditoriumTypeId,
@@ -105,11 +73,11 @@ namespace GeneratorServiceServer
             }).ToList();
         }
 
-        public List<AuditoriumData> GetDepartmentAuditoriumsForSubjectType(short departmentId, byte subjectTypeId)
+        public List<Auditorium> GetDepartmentAuditoriumsForSubjectType(short departmentId, byte subjectTypeId)
         {
             var auditoriumsSubjects = db.AuditoriumSubjectTypes.Where(ast => ast.SubjectTypeId == subjectTypeId).ToList();
             return db.Auditorium.Where(a => a.DepartmentId == departmentId &&
-                auditoriumsSubjects.Exists(ast => ast.AuditoriumTypeId == a.AuditoriumTypeId)).Select(a => new AuditoriumData
+                auditoriumsSubjects.Exists(ast => ast.AuditoriumTypeId == a.AuditoriumTypeId)).Select(a => new Auditorium
                 {
                     Id = a.Id,
                     AuditoriumTypeId = a.AuditoriumTypeId,
@@ -127,9 +95,9 @@ namespace GeneratorServiceServer
          * 
          */
         
-        public List<FacultyData> GetFacultiesView()
+        public List<Faculty> GetFacultiesView()
         {
-            return db.Faculty.Select(f=>new FacultyData {
+            return db.Faculty.Select(f=>new Faculty {
                 Id = f.Id,
                 FullName = f.FullName,
                 Name = f.Name
@@ -138,7 +106,7 @@ namespace GeneratorServiceServer
 
         public byte GetCurrentWeek()
         {
-            return 1;
+            return db.Week.FirstOrDefault().Id;
         }
     }
 }

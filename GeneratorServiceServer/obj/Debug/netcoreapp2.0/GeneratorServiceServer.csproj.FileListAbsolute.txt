@@ -5,8 +5,6 @@ D:\Timetable\Timetable\GeneratorServiceServer\obj\Debug\netcoreapp2.0\GeneratorS
 D:\Timetable\Timetable\GeneratorServiceServer\bin\Debug\netcoreapp2.0\GeneratorServiceServer.deps.json
 D:\Timetable\Timetable\GeneratorServiceServer\bin\Debug\netcoreapp2.0\GeneratorServiceServer.dll
 D:\Timetable\Timetable\GeneratorServiceServer\bin\Debug\netcoreapp2.0\GeneratorServiceServer.pdb
-D:\Timetable\Timetable\GeneratorServiceServer\bin\Debug\netcoreapp2.0\GeneratorService.dll
-D:\Timetable\Timetable\GeneratorServiceServer\bin\Debug\netcoreapp2.0\GeneratorService.pdb
 D:\Timetable\Timetable\GeneratorServiceServer\obj\Debug\netcoreapp2.0\GeneratorServiceServer.csproj.CopyComplete
 D:\Timetable\Timetable\GeneratorServiceServer\obj\Debug\netcoreapp2.0\GeneratorServiceServer.dll
 D:\Timetable\Timetable\GeneratorServiceServer\obj\Debug\netcoreapp2.0\GeneratorServiceServer.pdb

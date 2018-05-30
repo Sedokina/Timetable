@@ -1,5 +1,5 @@
 ﻿using DomainModel.Domain;
-using GeneratorService.Models;
+using DomainModel.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,9 +10,9 @@ namespace GeneratorServiceServer
 {
     public partial class GeneratorServiceImpl
     {
-        public List<TeacherPersonalTimeData> GetTeacherPersonalTime(int teacherId)
+        public List<TeacherPersonalTime> GetTeacherPersonalTime(int teacherId)
         {
-            return db.TeacherPersonalTime.Where(tpt => tpt.TeacherId == teacherId).Select(tpt => new TeacherPersonalTimeData
+            return db.TeacherPersonalTime.Where(tpt => tpt.TeacherId == teacherId).Select(tpt => new TeacherPersonalTime
             {
                 Id = tpt.Id,
                 DayOfWeekId = tpt.DayOfWeekId,
@@ -21,7 +21,7 @@ namespace GeneratorServiceServer
             }).ToList();
         }
 
-        public bool InsertGenTeachers(List<TeacherData> teachers)
+        public bool InsertGenTeachers(List<Teacher> teachers)
         {
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {
@@ -29,7 +29,7 @@ namespace GeneratorServiceServer
                 db.Database.ExecuteSqlCommand("Delete From Gen_Teachers");
                 try
                 {
-                    foreach (TeacherData teach in teachers)
+                    foreach (Teacher teach in teachers)
                     {
                         db.GenTeachers.Add(new GenTeachers
                         {
@@ -54,16 +54,16 @@ namespace GeneratorServiceServer
             return GetTeacherPersonalTime(teacherId).Count;
         }
 
-        public List<ScheduleData> GetTeacherSchedule(int teacherId, List<WeekData> weeks)
+        public List<Schedule> GetTeacherSchedule(Raschasovka load)
         {
             bool weeksContains = false;
             var scheduleList = db.Schedule
                 .Include(s => s.ScheduleWeeks)
-                .Where(s => s.TeacherId == teacherId && s.SemesterId == GetCurrentSemester().Id);
+                .Where(s => s.TeacherId == load.TeacherId && s.SemesterId == GetCurrentSemester().Id);
             List<Schedule> teachersFree = new List<Schedule>();
             foreach(var s in scheduleList)
             {
-                weeksContains = weeks.Select(w => new { Id = w.Id }).Except(s.ScheduleWeeks.Select(sw => new
+                weeksContains = load.RaschasovkaWeeks.Select(w => new Week { Id = w.WeekId }).Except(s.ScheduleWeeks.Select(sw => new Week
                 {
                     Id = sw.WeekId,
                 })).Any();
@@ -71,20 +71,7 @@ namespace GeneratorServiceServer
                     teachersFree.Add(s);
             }
             scheduleList.Except(teachersFree);
-            return scheduleList;
-            //return db.Schedule.Where(s => s.TeacherId == teacherId && s.SemesterId == GetCurrentSemester().Id)
-            //    .Select(s => new ScheduleData
-            //{
-            //    Id = s.Id,
-            //    AuditoriumId = s.AuditoriumId,
-            //    DayOfWeekId = s.DayOfWeekId,
-            //    GroupId = s.DayOfWeekId,
-            //    HourId = s.HourId,
-            //    SemesterId = s.SemesterId,
-            //    SubjectId = s.SubjectId,
-            //    SubjectTypeId = s.SubjectTypeId,
-            //    TeacherId = s.TeacherId
-            //}).ToList();
+            return scheduleList.ToList();
         }
 
     }

@@ -1,6 +1,5 @@
 ﻿using DomainModel.Domain;
-using GeneratorService.Models;
-using GeneratorService.ModelView;
+using DomainModel.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,53 +10,38 @@ namespace GeneratorServiceServer
 {
     public partial class GeneratorServiceImpl
     {
-        public List<ScheduleData> GetFacultySchedule(int facultyId)
+        public List<Schedule> GetFacultySchedule(int facultyId)
         {
-            return db.Schedule.Select(s => new ScheduleData
-            {
-                Id = s.Id,
-                AuditoriumId = s.AuditoriumId,
-                DayOfWeekId = s.DayOfWeekId,
-                GroupId = s.DayOfWeekId,
-                HourId = s.HourId,
-                SemesterId = s.SemesterId,
-                SubjectId = s.SubjectId,
-                SubjectTypeId = s.SubjectTypeId,
-                TeacherId = s.TeacherId
-            }).ToList();
+            return db.Schedule.ToList();
         }
 
 
-        public List<ScheduleData> GetGroupSchedule(long groupId)
+        public List<Schedule> GetGroupSchedule(long groupId)
         {
-            return db.Schedule.Where(s => s.GroupId == groupId && s.SemesterId == GetCurrentSemester().Id).Select(s => new ScheduleData
-            {
-                Id = s.Id,
-                AuditoriumId = s.AuditoriumId,
-                DayOfWeekId = s.DayOfWeekId,
-                GroupId = s.DayOfWeekId,
-                HourId = s.HourId,
-                SemesterId = s.SemesterId,
-                SubjectId = s.SubjectId,
-                SubjectTypeId = s.SubjectTypeId,
-                TeacherId = s.TeacherId
-            }).ToList();
+            return db.Schedule.Where(s => s.GroupId == groupId && s.SemesterId == GetCurrentSemester().Id).ToList();
         }
 
-        public List<ScheduleData> GetAuditoriumSchedule(short auditoriumId)
+        public List<Schedule> GetGroupScheduleWeeks(Raschasovka load)
         {
-            return db.Schedule.Where(s => s.AuditoriumId == auditoriumId && s.SemesterId == GetCurrentSemester().Id).Select(s => new ScheduleData
+            bool weeksContains = false;
+            var scheduleList = db.Schedule.Where(s => s.GroupId == load.GroupId && s.SemesterId == GetCurrentSemester().Id).ToList();
+            List<Schedule> teachersFree = new List<Schedule>();
+            foreach (var s in scheduleList)
             {
-                Id = s.Id,
-                AuditoriumId = s.AuditoriumId,
-                DayOfWeekId = s.DayOfWeekId,
-                GroupId = s.DayOfWeekId,
-                HourId = s.HourId,
-                SemesterId = s.SemesterId,
-                SubjectId = s.SubjectId,
-                SubjectTypeId = s.SubjectTypeId,
-                TeacherId = s.TeacherId
-            }).ToList();
+                weeksContains = load.RaschasovkaWeeks.Select(w => new Week { Id = w.WeekId }).Except(s.ScheduleWeeks.Select(sw => new Week
+                {
+                    Id = sw.WeekId,
+                })).Any();
+                if (weeksContains == true)
+                    teachersFree.Add(s);
+            }
+            scheduleList.Except(teachersFree);
+            return scheduleList.ToList();
+        }
+
+        public List<Schedule> GetAuditoriumSchedule(short auditoriumId)
+        {
+            return db.Schedule.Where(s => s.AuditoriumId == auditoriumId && s.SemesterId == GetCurrentSemester().Id).ToList();
         }
 
         public bool ScheduleWeeksClear()
@@ -78,7 +62,7 @@ namespace GeneratorServiceServer
             return true;
         }
 
-        public int AddScheduleTimeslot(LoadData load, TimeslotsCriteriaWeightData timeslot)
+        public int AddScheduleTimeslot(Raschasovka load, TimeslotsCriteriaWeight timeslot)
         {
             Schedule schedule;
             using (var dbContextTransaction = db.Database.BeginTransaction())

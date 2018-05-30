@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DomainModel.Domain;
 
 namespace GeneratorService.Models
 {
-    public class CriteriaWeightData
+    public class CriteriaWeight
     {
-        public CriteriaData criteria { get; set; }
+        public Criteria criteria { get; set; }
         public double Weight { get; set; }
     }
 }

@@ -4,9 +4,9 @@ using System.Text;
 
 namespace GeneratorService.Models
 {
-    public class CriteriaRateData
+    public class CriteriaRate
     {
-        public TimeslotsData timeslots { get; set; }
+        public Timeslots timeslots { get; set; }
         public float Rate { get; set; }
     }
 }

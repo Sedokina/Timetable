@@ -10,7 +10,5 @@ D:\Timetable\Timetable\GeneratorLogic\obj\Debug\netcoreapp2.0\GeneratorLogic.dll
 D:\Timetable\Timetable\GeneratorLogic\obj\Debug\netcoreapp2.0\GeneratorLogic.pdb
 D:\Timetable\Timetable\GeneratorLogic\bin\Debug\netcoreapp2.0\DomainModel.dll
 D:\Timetable\Timetable\GeneratorLogic\bin\Debug\netcoreapp2.0\DomainModel.pdb
-D:\Timetable\Timetable\GeneratorLogic\bin\Debug\netcoreapp2.0\GeneratorService.dll
 D:\Timetable\Timetable\GeneratorLogic\bin\Debug\netcoreapp2.0\GeneratorServiceServer.dll
 D:\Timetable\Timetable\GeneratorLogic\bin\Debug\netcoreapp2.0\GeneratorServiceServer.pdb
-D:\Timetable\Timetable\GeneratorLogic\bin\Debug\netcoreapp2.0\GeneratorService.pdb

@@ -1,5 +1,5 @@
 ﻿using DomainModel.Domain;
-using GeneratorService.Models;
+using DomainModel.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,34 +10,19 @@ namespace GeneratorServiceServer
 {
     public partial class GeneratorServiceImpl
     {
-        public List<TableWeightData> GetTeachersWeight()
+        public List<TableWeight> GetTeachersWeight()
         {
-            return db.Set<TableWeight>().FromSql("dbo.GetTeachersWeight").Select(w => new TableWeightData
-            {
-                Id = w.Id,
-                Weight = w.Weight
-            }).ToList();
+            return db.Set<TableWeight>().FromSql("dbo.GetTeachersWeight").ToList();
         }
 
-        public List<TableWeightData> GetSubjectClassWeight()
+        public List<TableWeight> GetSubjectClassWeight()
         {
-            return db.Set<TableWeight>().FromSql("dbo.GetSubjectClassWeight").Select(w => new TableWeightData
-            {
-                Id = w.Id,
-                Weight = w.Weight
-            }).ToList();
+            return db.Set<TableWeight>().FromSql("dbo.GetSubjectClassWeight").ToList();
         }
 
-        public List<TimeslotsWeightData> GetTimeslotsWeight()
+        public List<TimeslotsWeight> GetTimeslotsWeight()
         {
-            return db.Set<TimeslotsWeight>().FromSql("dbo.GetTimeslotsWeight").Select(t => new TimeslotsWeightData
-            {
-                Id = t.Id,
-                DayId = t.DayId,
-                HourId = t.HourId,
-                AuditoriumId = t.AuditoriumId,
-                Weight = t.Weight
-            }).ToList();
+            return db.Set<TimeslotsWeight>().FromSql("dbo.GetTimeslotsWeight").ToList();
         }
 
         public bool GenTimeslotsClear()
@@ -113,7 +98,7 @@ namespace GeneratorServiceServer
             return true;
         }
 
-        public bool InsertGenTimeslots(List<CriteriaRateData> timeslots, int i)
+        public bool InsertGenTimeslots(List<CriteriaRate> timeslots, int i)
         {
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {
@@ -122,7 +107,7 @@ namespace GeneratorServiceServer
 
                 try
                 {
-                    foreach (CriteriaRateData cr in timeslots)
+                    foreach (CriteriaRate cr in timeslots)
                     {
 
                         db.GenTimeslots.Add(new GenTimeslots

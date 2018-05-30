@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace GeneratorService.Models
 {
-    public class GenTimeslotsData
+    public class Timeslots
     {
-        public long Id { get; set; }
-        public byte DayId { get; set; }
         public byte HourId { get; set; }
+        public byte DayId { get; set; }
         public short AuditoriumId { get; set; }
-        public double Rate { get; set; }
     }
 }

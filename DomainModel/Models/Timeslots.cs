@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GeneratorService.Models
+namespace DomainModel.Models
 {
-    public class TimeslotsWeightData
+    public class Timeslots
     {
-        public int Id { get; set; }
         public byte HourId { get; set; }
         public byte DayId { get; set; }
         public short AuditoriumId { get; set; }
-        public double Weight { get; set; }
     }
 }

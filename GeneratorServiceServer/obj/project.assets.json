@@ -2355,16 +2355,6 @@
         "runtime": {
           "bin/placeholder/DomainModel.dll": {}
         }
-      },
-      "GeneratorService/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v2.0",
-        "compile": {
-          "bin/placeholder/GeneratorService.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/GeneratorService.dll": {}
-        }
       }
     }
   },
@@ -7500,17 +7490,11 @@
       "type": "project",
       "path": "../DomainModel/DomainModel.csproj",
       "msbuildProject": "../DomainModel/DomainModel.csproj"
-    },
-    "GeneratorService/1.0.0": {
-      "type": "project",
-      "path": "../GeneratorService/GeneratorService.csproj",
-      "msbuildProject": "../GeneratorService/GeneratorService.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
       "DomainModel >= 1.0.0",
-      "GeneratorService >= 1.0.0",
       "Microsoft.NETCore.App >= 2.0.0"
     ]
   },
@@ -7549,9 +7533,6 @@
           "projectReferences": {
             "D:\\Timetable\\Timetable\\DomainModel\\DomainModel.csproj": {
               "projectPath": "D:\\Timetable\\Timetable\\DomainModel\\DomainModel.csproj"
-            },
-            "D:\\Timetable\\Timetable\\GeneratorService\\GeneratorService.csproj": {
-              "projectPath": "D:\\Timetable\\Timetable\\GeneratorService\\GeneratorService.csproj"
             }
           }
         }

@@ -4417,18 +4417,9 @@
           "GeneratorLogic.dll": {}
         }
       },
-      "GeneratorService/1.0.0": {
-        "runtime": {
-          "GeneratorService.dll": {}
-        },
-        "compile": {
-          "GeneratorService.dll": {}
-        }
-      },
       "GeneratorServiceServer/1.0.0": {
         "dependencies": {
-          "DomainModel": "1.0.0",
-          "GeneratorService": "1.0.0"
+          "DomainModel": "1.0.0"
         },
         "runtime": {
           "GeneratorServiceServer.dll": {}
@@ -8750,11 +8741,6 @@
       "sha512": ""
     },
     "GeneratorLogic/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "GeneratorService/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

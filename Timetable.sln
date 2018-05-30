@@ -9,11 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratorServiceServer", "G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainModel", "DomainModel\DomainModel.csproj", "{1E765D79-6B03-4E06-9E77-1DF1DEDC2F26}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratorService", "GeneratorService\GeneratorService.csproj", "{9C216C8A-3BD0-42F2-A6B5-57092D25210C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimetableWebApp", "TimetableWebApp\TimetableWebApp.csproj", "{5B41DBC2-87E3-4775-A774-9EBA0C3B6CC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimetableAPI", "TimetableAPI\TimetableAPI.csproj", "{87E896A5-AD1B-4992-A226-909D8073E23C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimetableAPI", "TimetableAPI\TimetableAPI.csproj", "{87E896A5-AD1B-4992-A226-909D8073E23C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +31,6 @@ Global
 		{1E765D79-6B03-4E06-9E77-1DF1DEDC2F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E765D79-6B03-4E06-9E77-1DF1DEDC2F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E765D79-6B03-4E06-9E77-1DF1DEDC2F26}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9C216C8A-3BD0-42F2-A6B5-57092D25210C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C216C8A-3BD0-42F2-A6B5-57092D25210C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C216C8A-3BD0-42F2-A6B5-57092D25210C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C216C8A-3BD0-42F2-A6B5-57092D25210C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5B41DBC2-87E3-4775-A774-9EBA0C3B6CC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5B41DBC2-87E3-4775-A774-9EBA0C3B6CC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B41DBC2-87E3-4775-A774-9EBA0C3B6CC8}.Release|Any CPU.ActiveCfg = Release|Any CPU

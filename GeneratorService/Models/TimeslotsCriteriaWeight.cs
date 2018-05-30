@@ -4,17 +4,17 @@ using System.Text;
 
 namespace GeneratorService.Models
 {
-    public class TimeslotsCriteriaWeightData
+    public class TimeslotsCriteriaWeight
     {
         public byte HourId { get; set; }
         public byte DayId { get; set; }
         public short AuditoriumId { get; set; }
         public double AllCriteriaWeight { get; set; }
-        public List<CriteriaWeightData> criteriaWeight { get; set; }
+        public List<CriteriaWeight> criteriaWeight { get; set; }
 
-        public TimeslotsCriteriaWeightData()
+        public TimeslotsCriteriaWeight()
         {
-            criteriaWeight = new List<CriteriaWeightData>();
+            criteriaWeight = new List<CriteriaWeight>();
         }
     }
 }

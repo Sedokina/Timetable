@@ -8,8 +8,7 @@
     ".NETCoreApp,Version=v2.0": {
       "GeneratorServiceServer/1.0.0": {
         "dependencies": {
-          "DomainModel": "1.0.0",
-          "GeneratorService": "1.0.0"
+          "DomainModel": "1.0.0"
         },
         "runtime": {
           "GeneratorServiceServer.dll": {}
@@ -1464,11 +1463,6 @@
         "runtime": {
           "DomainModel.dll": {}
         }
-      },
-      "GeneratorService/1.0.0": {
-        "runtime": {
-          "GeneratorService.dll": {}
-        }
       }
     }
   },
@@ -2438,11 +2432,6 @@
       "hashPath": "system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
     },
     "DomainModel/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "GeneratorService/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

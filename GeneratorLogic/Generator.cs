@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using GeneratorServiceServer;
-using GeneratorService.Models;
+using DomainModel.Domain;
+using DomainModel.Models;
 
 namespace GeneratorLogic
 {
@@ -30,7 +31,7 @@ namespace GeneratorLogic
 
         private void TimetableGroups()
         {
-            List<LoadData> Loads = services.GetGroupsLoadForCurrentSemester();
+            List<Raschasovka> Loads = services.GetGroupsLoadForCurrentSemester();
             List<int> teachers = UniqueTeachers(Loads);
             TeachersRate(teachers);
             //services.GetTeachersWeight();
@@ -53,18 +54,18 @@ namespace GeneratorLogic
                 var Timeslots = services.GetHours().SelectMany(x => services.GetDaysOfWeek().Where(d=>d.Number != 6).Select(y => new { HourId = x.Id, DayId = y.Id })).ToList();
                 var PersonalTimeSlots = services.GetTeacherPersonalTime(load.load.TeacherId).Select(pt => new { HourId = pt.HourId, DayId = pt.DayOfWeekId });
                 //Исключить занятые таймслоты преподавателя
-                var TeacherSchedule = services.GetTeacherSchedule(load.load.TeacherId).Select(s => new { HourId = s.HourId, DayId = s.DayOfWeekId });
+                var TeacherSchedule = services.GetTeacherSchedule(load.load).Select(s => new { HourId = s.HourId, DayId = s.DayOfWeekId });
                 //Исключить занятые таймслоты группы
                 var GroupShcedule = services.GetGroupSchedule(load.load.GroupId).Select(s => new { HourId = s.HourId, DayId = s.DayOfWeekId });
                 Timeslots = Timeslots.Except(PersonalTimeSlots)
                     .Except(TeacherSchedule).Except(GroupShcedule).ToList();
                 var DepartmentAuditoriums = services.GetDepartmentAuditoriumsForSubjectType(load.load.DepartmentId, load.load.SubjectTypeId);
-                List<TimeslotsData> FinalTimeslots = DepartmentAuditoriums.SelectMany(a => Timeslots.Select(t => new TimeslotsData { HourId = t.HourId, DayId = t.DayId, AuditoriumId = a.Id })).ToList();
+                List<Timeslots> FinalTimeslots = DepartmentAuditoriums.SelectMany(a => Timeslots.Select(t => new Timeslots { HourId = t.HourId, DayId = t.DayId, AuditoriumId = a.Id })).ToList();
                 //Исключение таймслотов аудиторий из доступных тайслотов
-                List<TimeslotsData> AuditoriumSchedule = new List<TimeslotsData>();
+                List<Timeslots> AuditoriumSchedule = new List<Timeslots>();
                 DepartmentAuditoriums.ToList().ForEach(a => AuditoriumSchedule.AddRange(services.GetAuditoriumSchedule(a.Id)
-                  .Select(at => new TimeslotsData { HourId = at.HourId, DayId = at.DayOfWeekId, AuditoriumId = at.AuditoriumId }).ToList()));
-                foreach(TimeslotsData ts in AuditoriumSchedule)
+                  .Select(at => new Timeslots { HourId = at.HourId, DayId = at.DayOfWeekId, AuditoriumId = at.AuditoriumId }).ToList()));
+                foreach(Timeslots ts in AuditoriumSchedule)
                 {
                     FinalTimeslots.Remove(FinalTimeslots.FirstOrDefault(ft => ft.DayId == ts.DayId && ft.HourId == ts.HourId && ft.AuditoriumId == ts.AuditoriumId));
                 }
@@ -88,14 +89,14 @@ namespace GeneratorLogic
 
                 var criteria = services.GetCriteria();
 
-                List<TimeslotsCriteriaWeightData> timeslotsWeight = FinalTimeslots.Select(ts =>
-                    new TimeslotsCriteriaWeightData {
+                List<TimeslotsCriteriaWeight> timeslotsWeight = FinalTimeslots.Select(ts =>
+                    new TimeslotsCriteriaWeight {
                         AuditoriumId = ts.AuditoriumId,
                         DayId = ts.DayId,
                         HourId = ts.HourId
                     }).ToList();
 
-                foreach (CriteriaData c in criteria)
+                foreach (Criteria c in criteria)
                 {
 
                     foreach (var criteriaList in UseCriteria(c, FinalTimeslots, load.load).ToList())
@@ -103,7 +104,7 @@ namespace GeneratorLogic
                         foreach(var timeslot in timeslotsWeight.Where(ts => ts.DayId == criteriaList.DayId &&
                             ts.HourId == criteriaList.HourId && ts.AuditoriumId == criteriaList.AuditoriumId).ToList())
                         {
-                            timeslot.criteriaWeight.Add(new CriteriaWeightData
+                            timeslot.criteriaWeight.Add(new CriteriaWeight
                             {
                                 criteria = c,
                                 Weight = criteriaList.Weight
@@ -113,7 +114,7 @@ namespace GeneratorLogic
                     Console.WriteLine();
                 }
                 
-                foreach(TimeslotsCriteriaWeightData tw in timeslotsWeight)
+                foreach(TimeslotsCriteriaWeight tw in timeslotsWeight)
                 {
                     Console.WriteLine(tw.AllCriteriaWeight);
                     tw.criteriaWeight.ForEach(cw => tw.AllCriteriaWeight += cw.Weight * cw.criteria.Rate);
@@ -128,9 +129,9 @@ namespace GeneratorLogic
             Console.WriteLine();
         }
 
-        private List<TimeslotsWeightData> UseCriteria(CriteriaData criteria, List<TimeslotsData> timeslots, LoadData load)
+        private List<TimeslotsWeight> UseCriteria(Criteria criteria, List<Timeslots> timeslots, Raschasovka load)
         {
-            List<CriteriaRateData> criteriaRate = new List<CriteriaRateData>();
+            List<CriteriaRate> criteriaRate = new List<CriteriaRate>();
             switch (criteria.Name)
             {
                 case "MinGap":
@@ -154,36 +155,36 @@ namespace GeneratorLogic
                 services.InsertGenTimeslots(criteriaRate, load.Id);
                 return services.GetTimeslotsWeight();
             }
-            return new List<TimeslotsWeightData>();
+            return new List<TimeslotsWeight>();
         }
 
-        private List<CriteriaRateData> CheckGap(LoadData load, List<TimeslotsData> timeslots)
+        private List<CriteriaRate> CheckGap(Raschasovka load, List<Timeslots> timeslots)
         {
             var groupSchedule = services.GetGroupSchedule(load.GroupId).Join(services.GetHours(), s => s.HourId, h => h.Id, (s, h) => new { s.Id, s.DayOfWeekId, s.HourId, hourNumber = h.Number });
             var tslots = timeslots.Join(services.GetHours(), t => t.HourId, h => h.Id, (t, h) => new { t.HourId, t.DayId, t.AuditoriumId, HourNumber = h.Number });
 
-            List<CriteriaRateData> rate = new List<CriteriaRateData>();
+            List<CriteriaRate> rate = new List<CriteriaRate>();
             foreach (var t in tslots)
             {
                 int gap = groupSchedule.Where(s => s.DayOfWeekId == t.DayId)
                     .Where(s => s.hourNumber == t.HourNumber + 1 || s.hourNumber == t.HourNumber - 1).Count();
-                rate.Add(new CriteriaRateData { timeslots = new TimeslotsData{ DayId = t.DayId, HourId = t.HourId, AuditoriumId = t.AuditoriumId }, Rate = gap });
+                rate.Add(new CriteriaRate { timeslots = new Timeslots{ DayId = t.DayId, HourId = t.HourId, AuditoriumId = t.AuditoriumId }, Rate = gap });
             }
             
             return rate;
         }
 
-        private List<CriteriaRateData> MoreThanOneSubject(LoadData load, List<TimeslotsData> timeslots)
+        private List<CriteriaRate> MoreThanOneSubject(Raschasovka load, List<Timeslots> timeslots)
         {
-            List<CriteriaRateData> rate = new List<CriteriaRateData>();
+            List<CriteriaRate> rate = new List<CriteriaRate>();
             var groupSchedule = services.GetGroupSchedule(load.GroupId);
             foreach(var day in services.GetDaysOfWeek())
             {
                 if (groupSchedule.Where(gs => gs.DayOfWeekId == day.Id).Count() <= 1)
                 {
-                    rate.AddRange(timeslots.Where(ts => ts.DayId == day.Id).Select(ts => new CriteriaRateData
+                    rate.AddRange(timeslots.Where(ts => ts.DayId == day.Id).Select(ts => new CriteriaRate
                     {
-                        timeslots = new TimeslotsData
+                        timeslots = new Timeslots
                         {
                             DayId = ts.DayId, HourId = ts.HourId, AuditoriumId = ts.AuditoriumId
                         }
@@ -195,9 +196,9 @@ namespace GeneratorLogic
             return rate;
         }
 
-        private List<CriteriaRateData> LessThenFourSubject(LoadData load, List<TimeslotsData> timeslots)
+        private List<CriteriaRate> LessThenFourSubject(Raschasovka load, List<Timeslots> timeslots)
         {
-            List<CriteriaRateData> rate = new List<CriteriaRateData>();
+            List<CriteriaRate> rate = new List<CriteriaRate>();
             var groupSchedule = services.GetGroupSchedule(load.GroupId);
             int rateValue = 0;
             foreach (var day in services.GetDaysOfWeek())
@@ -206,9 +207,9 @@ namespace GeneratorLogic
                     rateValue = 0;
                 else
                     rateValue = 1;
-                rate.AddRange(timeslots.Where(ts => ts.DayId == day.Id).Select(ts => new CriteriaRateData
+                rate.AddRange(timeslots.Where(ts => ts.DayId == day.Id).Select(ts => new CriteriaRate
                 {
-                    timeslots = new TimeslotsData
+                    timeslots = new Timeslots
                     {
                         DayId = ts.DayId,
                         HourId = ts.HourId,
@@ -221,10 +222,10 @@ namespace GeneratorLogic
             return rate;
         }
 
-        private List<CriteriaRateData> ScheduleShift(LoadData load, List<TimeslotsData> timeslots)
+        private List<CriteriaRate> ScheduleShift(Raschasovka load, List<Timeslots> timeslots)
         {
             var slots = timeslots.Join(services.GetHours(), t => t.HourId, h => h.Id, (t, h) => new { t.DayId, t.HourId, t.AuditoriumId, h.Number });
-            List<CriteriaRateData> rate = new List<CriteriaRateData>();
+            List<CriteriaRate> rate = new List<CriteriaRate>();
             var groupSchedule = services.GetGroupSchedule(load.GroupId);
             int rateValue = 0;
             int hoursPerDay = services.GetHours().Count() / 2;
@@ -244,9 +245,9 @@ namespace GeneratorLogic
                     else
                         rateValue = 0;
                 }
-                rate.Add(new CriteriaRateData
+                rate.Add(new CriteriaRate
                 {
-                    timeslots = new TimeslotsData
+                    timeslots = new Timeslots
                     {
                         DayId = t.DayId,
                         HourId = t.HourId,
@@ -269,7 +270,7 @@ namespace GeneratorLogic
         //Список групп из расчасовки за текущий семетр отсортированных по курсу
         
 
-        private List<int> UniqueTeachers(List<LoadData> Load)
+        private List<int> UniqueTeachers(List<Raschasovka> Load)
         {
             return Load.Select(load => load.TeacherId)
                 .GroupBy(l=>l).Select(y => y.First()).ToList();
@@ -277,7 +278,7 @@ namespace GeneratorLogic
 
         private void TeachersRate(List<int> teachers)
         {
-            services.InsertGenTeachers(teachers.Select(t => new TeacherData { Id = t }).ToList());
+            services.InsertGenTeachers(teachers.Select(t => new Teacher { Id = t }).ToList());
         }
     }
 }

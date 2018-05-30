@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DomainModel\DomainModel.csproj" />
-    <ProjectReference Include="..\GeneratorService\GeneratorService.csproj" />
   </ItemGroup>
 
 </Project>
