@@ -20,16 +20,20 @@ namespace TimetableWebApp.Controllers
             return View();
         }
 
+        
         public ActionResult Faculties()
         {
             GeneratorServiceImpl gr = new GeneratorServiceImpl();
-            return View(gr.GetFacultiesView().OrderBy(f => f.Name));
+            ViewBag.Faculties = gr.GetFacultiesView().OrderBy(f => f.Name);
+            Microsoft.AspNetCore.Mvc.Rendering.SelectList weeks = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(gr.GetWeeks(), "Id", "Number");
+            ViewBag.Weeks = weeks;
+            return View();
         }
-
-        public ActionResult Timetable(int id)
+       
+        public ActionResult Timetable(int id, byte weekId)
         {
             GeneratorServiceImpl gr = new GeneratorServiceImpl();
-            return View(gr.GetGroupScheduleView(id));
+            return View(gr.GetGroupScheduleView(id, weekId, 1086));
         }
 
         public ActionResult Generate()

@@ -52,7 +52,9 @@ namespace GeneratorLogic
             {
                 var Timeslots = services.GetHours().SelectMany(x => services.GetDaysOfWeek().Where(d=>d.Number != 6).Select(y => new { HourId = x.Id, DayId = y.Id })).ToList();
                 var PersonalTimeSlots = services.GetTeacherPersonalTime(load.load.TeacherId).Select(pt => new { HourId = pt.HourId, DayId = pt.DayOfWeekId });
+                //Исключить занятые таймслоты преподавателя
                 var TeacherSchedule = services.GetTeacherSchedule(load.load.TeacherId).Select(s => new { HourId = s.HourId, DayId = s.DayOfWeekId });
+                //Исключить занятые таймслоты группы
                 var GroupShcedule = services.GetGroupSchedule(load.load.GroupId).Select(s => new { HourId = s.HourId, DayId = s.DayOfWeekId });
                 Timeslots = Timeslots.Except(PersonalTimeSlots)
                     .Except(TeacherSchedule).Except(GroupShcedule).ToList();

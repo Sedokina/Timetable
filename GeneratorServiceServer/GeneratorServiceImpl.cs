@@ -135,5 +135,10 @@ namespace GeneratorServiceServer
                 Name = f.Name
             }).ToList();
         }
+
+        public byte GetCurrentWeek()
+        {
+            return 1;
+        }
     }
 }

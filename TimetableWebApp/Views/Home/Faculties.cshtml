@@ -1,11 +1,9 @@
-﻿@model IEnumerable<GeneratorService.Models.FacultyData>
-
-@{
+﻿@{
     ViewData["Title"] = "Timetable";
 }
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 <div class="alert alert-warning">
     <strong>Внимание критерий "Лекционные занятия в первой половине смены" не выполняется</strong> Факультет -Имя-, Группа -Имя-, День -День недели-, Время -Время занятия-
 </div>
@@ -15,6 +13,8 @@
 </div>
 
 <div class="container">
+    <h4>Недели: @Html.DropDownList("Id", ViewBag.Weeks as SelectList, "--№ недели--", new { @id = "ddlWeeks", @class = "form-control" })</h4>
+
     <table class="table table-hover">
         <thead>
             <tr>
@@ -27,17 +27,33 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in ViewBag.Faculties)
             {
                 <tr>
                     <td>
-                        <a href="/home/timetable/@item.Id"> @Html.DisplayFor(modelItem => item.Name) </a>
+                        <a href="/home/timetable/@item.Id">@item.Name </a>
                     </td>
                     <td>
-                        <a href="/home/timetable/@item.Id"> @Html.DisplayFor(modelItem => item.FullName)</a>
+                        <a href="/home/timetable/@item.Id">@item.FullName</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+<script type="text/javascript">
+
+    function getSelectedValue() {
+
+        alert("aaaaaaaaaaaa");
+        alert($("#ddlWeeks").val());
+
+    }
+
+    function getSelectedText() {
+
+        alert($("#ddlWeeks option:selected").text());
+
+    }
+
+</script>
