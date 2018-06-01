@@ -21,7 +21,7 @@ namespace GeneratorServiceServer
             }).ToList();
         }
 
-        public bool InsertGenTeachers(List<Teacher> teachers)
+        public bool InsertGenTeachers(List<RateData> teachers)
         {
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {
@@ -29,12 +29,12 @@ namespace GeneratorServiceServer
                 db.Database.ExecuteSqlCommand("Delete From Gen_Teachers");
                 try
                 {
-                    foreach (Teacher teach in teachers)
+                    foreach (RateData teach in teachers)
                     {
                         db.GenTeachers.Add(new GenTeachers
                         {
                             TeacherId = teach.Id,
-                            Rate = CountTeacherPersonalTime(teach.Id) + 1
+                            Rate = teach.Rate + 1
                         });
                     }
                     db.SaveChanges();
@@ -56,22 +56,24 @@ namespace GeneratorServiceServer
 
         public List<Schedule> GetTeacherSchedule(Raschasovka load)
         {
-            bool weeksContains = false;
-            var scheduleList = db.Schedule
+            List<Schedule> scheduleList = db.Schedule
                 .Include(s => s.ScheduleWeeks)
-                .Where(s => s.TeacherId == load.TeacherId && s.SemesterId == GetCurrentSemester().Id);
+                .Where(s => s.TeacherId == load.TeacherId && s.SemesterId == GetCurrentSemester().Id).ToList();
             List<Schedule> teachersFree = new List<Schedule>();
             foreach(var s in scheduleList)
             {
-                weeksContains = load.RaschasovkaWeeks.Select(w => new Week { Id = w.WeekId }).Except(s.ScheduleWeeks.Select(sw => new Week
-                {
-                    Id = sw.WeekId,
-                })).Any();
-                if (weeksContains == true)
+                //weeksContains = !load.RaschasovkaWeeks.Where(rw => rw.HoursForWeek != 0).Select(w => new Week { Id = w.WeekId }).Except(s.ScheduleWeeks.Select(sw => new Week
+                //{
+                //    Id = sw.WeekId,
+                //})).Any();
+                var set = new HashSet<int>(load.RaschasovkaWeeks.Where(rw => rw.HoursForWeek != 0).Select(w => (int)w.WeekId));
+                var set2 = s.ScheduleWeeks.Select(sw => (int)sw.WeekId);
+                var equals = set.SetEquals(set2);
+                if (equals == false && set.Count() == set2.Count())
                     teachersFree.Add(s);
             }
-            scheduleList.Except(teachersFree);
-            return scheduleList.ToList();
+            scheduleList = scheduleList.Except(teachersFree).ToList();
+            return scheduleList;
         }
 
     }

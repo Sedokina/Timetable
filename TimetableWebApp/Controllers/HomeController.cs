@@ -12,6 +12,8 @@ namespace TimetableWebApp.Controllers
     {
         public IActionResult Index()
         {
+            //GeneratorServiceImpl gr = new GeneratorServiceImpl();
+            //gr.GetTeachersLoadRate();
             return View();
         }
 
@@ -33,7 +35,9 @@ namespace TimetableWebApp.Controllers
         public ActionResult Timetable(int id, byte weekId)
         {
             GeneratorServiceImpl gr = new GeneratorServiceImpl();
-            return View(gr.GetGroupScheduleView(id, weekId, 1086));
+            ViewBag.Faculty = gr.GetFacultie(id);
+            ViewBag.Week = gr.GetWeekNumber(weekId);
+            return View(gr.GetGroupScheduleView(id, weekId));
         }
 
         public ActionResult Generate()

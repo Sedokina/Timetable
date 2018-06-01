@@ -6,7 +6,7 @@
 <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-<h2>Timetable</h2>
+<h2>@ViewBag.Faculty.Name, неделя @ViewBag.Week.Number</h2>
 @{
     var groupList = Model.GroupBy(m => m.Group.Id).Select(m => m.First()).OrderBy(m => m.Group.Name).ToList();
     var hoursList = Model.GroupBy(m => m.Hour.Id).Select(m => m.First()).OrderBy(m => m.Hour.Number).ToList();
@@ -46,7 +46,7 @@
                                     @item.Subject.FullName + @item.SubjectType.Name + 
                                     @item.Teacher.LastName + @item.Auditorium.Name
                                     <p>
-                                        h = @item.Hour.Id, d = @item.DayOfWeek.Id
+                                       @* h = @item.Hour.Id, d = @item.DayOfWeek.Id*@
                                     </p>
                                 </td>
                             }

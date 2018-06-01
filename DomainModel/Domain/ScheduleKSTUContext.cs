@@ -199,12 +199,6 @@ namespace DomainModel.Domain
             modelBuilder.Entity<GenTeachers>(entity =>
             {
                 entity.ToTable("Gen_Teachers");
-
-                entity.HasOne(d => d.Teacher)
-                    .WithMany(p => p.GenTeachers)
-                    .HasForeignKey(d => d.TeacherId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Gen_Teachers_Teacher");
             });
 
             modelBuilder.Entity<GenTimeslots>(entity =>

@@ -1,4 +1,5 @@
 ﻿using DomainModel.Domain;
+using DomainModel.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -27,8 +28,9 @@ namespace GeneratorServiceServer
         public List<Raschasovka> GetGroupsLoadForCurrentSemester()
         {
 
-            return db.Raschasovka.Where(load => load.Semester.Id == GetSemesterByName("Весенний").Id).
-                OrderBy(load => load.Course.Number).ToList();
+            return db.Raschasovka.Where(load => load.Semester.Id == GetSemesterByName("Весенний").Id)
+                .Include(l=>l.RaschasovkaWeeks)
+                .OrderBy(load => load.Course.Number).ToList();
         }
         /*
          * Semester
@@ -107,6 +109,25 @@ namespace GeneratorServiceServer
         public byte GetCurrentWeek()
         {
             return db.Week.FirstOrDefault().Id;
+        }
+
+        //public List<TeachersLoadWeight> GetTeachersLoadRate()
+        //{
+        //    int i = 0;
+        //    var GenList = db.Raschasovka.GroupBy(r => new { r.TeacherId, r.TotalHoursForSemestr })
+        //        .Select(r => new TeachersLoadRate { Id = 0, Rate = r.Count() + r.Key.TotalHoursForSemestr, TeacherId = r.Key.TeacherId, TotalHours = r.Key.TotalHoursForSemestr }).ToList();
+        //    foreach (var item in GenList)
+        //        item.Id = ++i;
+        //    InsertGenTeachers(GenList.Select(l=>new RateData {Id = l.Id, Rate = l.Rate }).ToList());
+        //    return GenList.Join(GetTeachersWeight(), l => l.Id, w => w.Id, (l, w) => new TeachersLoadWeight { TeacherId = l.TeacherId, TotalHours = l.TotalHours, Weight = w.Weight }).ToList();
+        //}
+
+        public List<RateData> GetTeachersLoadRate()
+        {
+            //return db.Raschasovka.GroupBy(r => new { r.TeacherId, r.TotalHoursForSemestr })
+            //    .Select(r => new RateData { Rate = r.Count() + r.Key.TotalHoursForSemestr, Id = r.Key.TeacherId }).ToList();
+            return db.Raschasovka.GroupBy(r => r.TeacherId)
+                .Select(r => new RateData { Rate = r.Count(), Id = r.Key }).ToList();
         }
     }
 }

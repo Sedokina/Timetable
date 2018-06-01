@@ -78,5 +78,14 @@ namespace GeneratorServiceServer
         {
             return db.Criteria.ToList();
         }
+
+        public Faculty GetFacultie(int id)
+        {
+            return db.Faculty.FirstOrDefault(f => f.Id == id);
+        }
+        public Week GetWeekNumber(byte id)
+        {
+            return db.Week.FirstOrDefault(w=>w.Id == id);
+        }
     }
 }

@@ -12,17 +12,17 @@ namespace GeneratorServiceServer
     {
         public List<TableWeight> GetTeachersWeight()
         {
-            return db.Set<TableWeight>().FromSql("dbo.GetTeachersWeight").ToList();
+            return db.Set<TableWeight>().FromSql("dbo.GetTeachersWeight").AsNoTracking().ToList();
         }
 
         public List<TableWeight> GetSubjectClassWeight()
         {
-            return db.Set<TableWeight>().FromSql("dbo.GetSubjectClassWeight").ToList();
+            return db.Set<TableWeight>().FromSql("dbo.GetSubjectClassWeight").AsNoTracking().ToList();
         }
 
         public List<TimeslotsWeight> GetTimeslotsWeight()
         {
-            return db.Set<TimeslotsWeight>().FromSql("dbo.GetTimeslotsWeight").ToList();
+            return db.Set<TimeslotsWeight>().FromSql("dbo.GetTimeslotsWeight").AsNoTracking().ToList();
         }
 
         public bool GenTimeslotsClear()

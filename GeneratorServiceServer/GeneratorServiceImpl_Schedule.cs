@@ -16,9 +16,28 @@ namespace GeneratorServiceServer
         }
 
 
-        public List<Schedule> GetGroupSchedule(long groupId)
+        //public List<Schedule> GetGroupSchedule(long groupId)
+        //{
+        //    return db.Schedule
+        //        .Include(s => s.ScheduleWeeks)
+        //        .Where(s => s.GroupId == groupId && s.SemesterId == GetCurrentSemester().Id).ToList();
+        //}
+
+        public List<Schedule> GetGroupSchedule(Raschasovka load)
         {
-            return db.Schedule.Where(s => s.GroupId == groupId && s.SemesterId == GetCurrentSemester().Id).ToList();
+            List<Schedule> scheduleList = db.Schedule.Include(s => s.ScheduleWeeks)
+                .Where(s => s.GroupId == load.GroupId && s.SemesterId == GetCurrentSemester().Id).ToList();
+            List<Schedule> groupFree = new List<Schedule>();
+            foreach (var s in scheduleList)
+            {
+                var set = new HashSet<int>(load.RaschasovkaWeeks.Where(rw => rw.HoursForWeek != 0).Select(w => (int)w.WeekId));
+                var set2 = s.ScheduleWeeks.Select(sw => (int)sw.WeekId);
+                var equals = set.SetEquals(set2);
+                if (equals == false && set.Count() == set2.Count())
+                    groupFree.Add(s);
+            }
+            scheduleList = scheduleList.Except(groupFree).ToList();
+            return scheduleList;
         }
 
         public List<Schedule> GetGroupScheduleWeeks(Raschasovka load)
@@ -115,14 +134,14 @@ namespace GeneratorServiceServer
             return true;
         }
 
-        public List<Schedule> GetGroupScheduleView(int facultyId, byte? weekId, int groupId)
+        public List<Schedule> GetGroupScheduleView(int facultyId, byte? weekId)
         {
             byte wid;
             if (weekId != null)
                 wid = (byte)weekId;
             else
                 wid = GetCurrentWeek();
-            var list = GetWeekFacultySchedule(facultyId, wid, groupId);
+            var list = GetWeekFacultySchedule(facultyId, wid);
             return list;
         }
 
@@ -199,7 +218,7 @@ namespace GeneratorServiceServer
         //        .ToList();
         //}
 
-        public List<Schedule> GetWeekFacultySchedule(int facultyId, byte weekId, int groupId)
+        public List<Schedule> GetWeekFacultySchedule(int facultyId, byte weekId)
         {
             return db.ScheduleWeeks
                 .Include(sw => sw.Schedule)
@@ -211,7 +230,7 @@ namespace GeneratorServiceServer
                 .Include(sw => sw.Schedule.Hour)
                 .Include(sw => sw.Schedule.SubjectType)
                 .Include(sw => sw.Schedule.Teacher)
-                .Where(sw => sw.Schedule.SemesterId == GetCurrentSemester().Id && sw.Schedule.Group.Department.FacultyId == facultyId && sw.WeekId == weekId && sw.Schedule.GroupId == groupId)
+                .Where(sw => sw.Schedule.SemesterId == GetCurrentSemester().Id && sw.Schedule.Group.Department.FacultyId == facultyId && sw.WeekId == weekId)
                 .Select(sw => new Schedule {
                     Id = sw.Schedule.Id,
                     AuditoriumId = sw.Schedule.AuditoriumId,
