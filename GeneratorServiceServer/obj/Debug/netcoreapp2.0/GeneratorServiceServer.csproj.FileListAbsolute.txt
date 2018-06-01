@@ -1,0 +1,12 @@
+D:\Timetable\Timetable\GeneratorServiceServer\obj\Debug\netcoreapp2.0\GeneratorServiceServer.csprojResolveAssemblyReference.cache
+D:\Timetable\Timetable\GeneratorServiceServer\obj\Debug\netcoreapp2.0\GeneratorServiceServer.csproj.CoreCompileInputs.cache
+D:\Timetable\Timetable\GeneratorServiceServer\obj\Debug\netcoreapp2.0\GeneratorServiceServer.AssemblyInfoInputs.cache
+D:\Timetable\Timetable\GeneratorServiceServer\obj\Debug\netcoreapp2.0\GeneratorServiceServer.AssemblyInfo.cs
+D:\Timetable\Timetable\GeneratorServiceServer\bin\Debug\netcoreapp2.0\GeneratorServiceServer.deps.json
+D:\Timetable\Timetable\GeneratorServiceServer\bin\Debug\netcoreapp2.0\GeneratorServiceServer.dll
+D:\Timetable\Timetable\GeneratorServiceServer\bin\Debug\netcoreapp2.0\GeneratorServiceServer.pdb
+D:\Timetable\Timetable\GeneratorServiceServer\obj\Debug\netcoreapp2.0\GeneratorServiceServer.csproj.CopyComplete
+D:\Timetable\Timetable\GeneratorServiceServer\obj\Debug\netcoreapp2.0\GeneratorServiceServer.dll
+D:\Timetable\Timetable\GeneratorServiceServer\obj\Debug\netcoreapp2.0\GeneratorServiceServer.pdb
+D:\Timetable\Timetable\GeneratorServiceServer\bin\Debug\netcoreapp2.0\DomainModel.dll
+D:\Timetable\Timetable\GeneratorServiceServer\bin\Debug\netcoreapp2.0\DomainModel.pdb

@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v2.0": {
       "GeneratorLogic/1.0.0": {
         "dependencies": {
-          "DataModel": "1.0.0"
+          "DomainModel": "1.0.0",
+          "GeneratorServiceServer": "1.0.0"
         },
         "runtime": {
           "GeneratorLogic.dll": {}
@@ -1454,14 +1455,22 @@
           "System.Xml.XPath": "4.3.0"
         }
       },
-      "DataModel/1.0.0": {
+      "DomainModel/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.SqlServer": "2.0.3",
           "Microsoft.EntityFrameworkCore.Tools": "2.0.3",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.0.4"
         },
         "runtime": {
-          "DataModel.dll": {}
+          "DomainModel.dll": {}
+        }
+      },
+      "GeneratorServiceServer/1.0.0": {
+        "dependencies": {
+          "DomainModel": "1.0.0"
+        },
+        "runtime": {
+          "GeneratorServiceServer.dll": {}
         }
       }
     }
@@ -2431,7 +2440,12 @@
       "path": "system.xml.xpath.xdocument/4.3.0",
       "hashPath": "system.xml.xpath.xdocument.4.3.0.nupkg.sha512"
     },
-    "DataModel/1.0.0": {
+    "DomainModel/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "GeneratorServiceServer/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

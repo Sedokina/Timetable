@@ -3,11 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataModel", "Timetable\DataModel.csproj", "{D08C75AE-C6F9-45AF-89EF-FE3294F581AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratorLogic", "GeneratorLogic\GeneratorLogic.csproj", "{9F31C8BE-ADD3-4644-BD65-940B42C403A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneratorLogic", "GeneratorLogic\GeneratorLogic.csproj", "{9F31C8BE-ADD3-4644-BD65-940B42C403A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratorServiceServer", "GeneratorServiceServer\GeneratorServiceServer.csproj", "{E3B2ED32-B862-4E4D-969F-BE7212F2D2D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimetableAPI", "TimetableAPI\TimetableAPI.csproj", "{B127A75A-70A4-42AA-80F5-BB839A3D3979}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainModel", "DomainModel\DomainModel.csproj", "{1E765D79-6B03-4E06-9E77-1DF1DEDC2F26}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimetableWebApp", "TimetableWebApp\TimetableWebApp.csproj", "{5B41DBC2-87E3-4775-A774-9EBA0C3B6CC8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimetableAPI", "TimetableAPI\TimetableAPI.csproj", "{87E896A5-AD1B-4992-A226-909D8073E23C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,18 +19,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D08C75AE-C6F9-45AF-89EF-FE3294F581AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D08C75AE-C6F9-45AF-89EF-FE3294F581AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D08C75AE-C6F9-45AF-89EF-FE3294F581AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D08C75AE-C6F9-45AF-89EF-FE3294F581AE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9F31C8BE-ADD3-4644-BD65-940B42C403A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9F31C8BE-ADD3-4644-BD65-940B42C403A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F31C8BE-ADD3-4644-BD65-940B42C403A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F31C8BE-ADD3-4644-BD65-940B42C403A7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B127A75A-70A4-42AA-80F5-BB839A3D3979}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B127A75A-70A4-42AA-80F5-BB839A3D3979}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B127A75A-70A4-42AA-80F5-BB839A3D3979}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B127A75A-70A4-42AA-80F5-BB839A3D3979}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3B2ED32-B862-4E4D-969F-BE7212F2D2D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3B2ED32-B862-4E4D-969F-BE7212F2D2D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3B2ED32-B862-4E4D-969F-BE7212F2D2D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3B2ED32-B862-4E4D-969F-BE7212F2D2D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E765D79-6B03-4E06-9E77-1DF1DEDC2F26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E765D79-6B03-4E06-9E77-1DF1DEDC2F26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E765D79-6B03-4E06-9E77-1DF1DEDC2F26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E765D79-6B03-4E06-9E77-1DF1DEDC2F26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B41DBC2-87E3-4775-A774-9EBA0C3B6CC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B41DBC2-87E3-4775-A774-9EBA0C3B6CC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B41DBC2-87E3-4775-A774-9EBA0C3B6CC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B41DBC2-87E3-4775-A774-9EBA0C3B6CC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87E896A5-AD1B-4992-A226-909D8073E23C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87E896A5-AD1B-4992-A226-909D8073E23C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87E896A5-AD1B-4992-A226-909D8073E23C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87E896A5-AD1B-4992-A226-909D8073E23C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

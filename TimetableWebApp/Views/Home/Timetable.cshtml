@@ -1,0 +1,63 @@
+﻿@model IEnumerable<DomainModel.Domain.Schedule>
+
+@{
+    ViewData["Title"] = "Timetable";
+}
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+<h2>@ViewBag.Faculty.Name, неделя @ViewBag.Week.Number</h2>
+@{
+    var groupList = Model.GroupBy(m => m.Group.Id).Select(m => m.First()).OrderBy(m => m.Group.Name).ToList();
+    var hoursList = Model.GroupBy(m => m.Hour.Id).Select(m => m.First()).OrderBy(m => m.Hour.Number).ToList();
+    var daysList = Model.GroupBy(m => m.DayOfWeek.Id).Select(m => m.First()).OrderBy(m => m.DayOfWeek.Number).ToList();
+}
+<table class="table-sm table-bordered table-striped">
+
+    <thead>
+        <tr>
+            <th>Time</th>
+            @foreach (var group in groupList)
+            {
+                <th>@group.Group.Name</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var day in daysList)
+        {
+        <tr class="bg-info">
+            <td><h4> @day.DayOfWeek.FullName </h4></td>
+            <td><h4> @day.DayOfWeek.FullName </h4></td>
+            <td><h4> @day.DayOfWeek.FullName </h4></td>
+            <td><h4> @day.DayOfWeek.FullName </h4></td>
+            <td><h4> @day.DayOfWeek.FullName </h4></td>
+        </tr>
+            @foreach (var hour in hoursList)
+            {
+                <tr>
+                    <th>@hour.Hour.Begin</th>
+                    @foreach (var group in groupList)
+                    {
+                        var item = Model.FirstOrDefault(m=>m.Group.Id == group.Group.Id && m.DayOfWeek.Id == day.DayOfWeek.Id && m.Hour.Id==hour.Hour.Id);
+                            @if (item != null)
+                            {
+                                <td>
+                                    @item.Subject.FullName + @item.SubjectType.Name + 
+                                    @item.Teacher.LastName + @item.Auditorium.Name
+                                    <p>
+                                       @* h = @item.Hour.Id, d = @item.DayOfWeek.Id*@
+                                    </p>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+
+                            }
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
