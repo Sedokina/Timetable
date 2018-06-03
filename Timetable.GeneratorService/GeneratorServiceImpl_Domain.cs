@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Timetable.DAL;
 
 namespace Timetable.GeneratorService
 {
@@ -11,81 +12,129 @@ namespace Timetable.GeneratorService
 
         public List<Course> GetCourses()
         {
-            return db.Course.ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Course.ToList();
+            }
         }
 
         public List<Teacher> GetTeachers()
         {
-            return db.Teacher.ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Teacher.ToList();
+            }
         }
 
         public List<Auditorium> GetAuditoriums()
         {
-            return db.Auditorium.ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Auditorium.ToList();
+            }
         }
 
         public List<Group> GetGroups()
         {
-            return db.Group.ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Group.ToList();
+            }
         }
 
         public List<Department> GetDepartments()
         {
-            return db.Department.ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Department.ToList();
+            }
         }
 
         public List<Semesters> GetSemesters()
         {
-            return db.Semesters.ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Semesters.ToList();
+            }
         }
 
         public List<Subject> GetSubjects()
         {
-            return db.Subject.ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Subject.ToList();
+            }
         }
 
         public List<SubjectType> GetSubjectTypes()
         {
-            return db.SubjectType.ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.SubjectType.ToList();
+            }
         }
 
         public List<Week> GetWeeks()
         {
-            return db.Week.ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Week.ToList();
+            }
         }
 
         public List<Faculty> GetFaculties()
         {
-            return db.Faculty.ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Faculty.ToList();
+            }
         }
 
         public List<Raschasovka> GetLoad()
         {
-            return db.Raschasovka.ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Raschasovka.ToList();
+            }
         }
 
         public List<Hour> GetHours()
         {
-            return db.Hour.ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Hour.ToList();
+            }
         }
 
         public List<Timetable.DomainCore.Domain.DayOfWeek> GetDaysOfWeek()
         {
-            return db.DayOfWeek.ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.DayOfWeek.ToList();
+            }
         }
 
         public List<Criteria> GetCriteria()
         {
-            return db.Criteria.ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Criteria.ToList();
+            }
         }
 
         public Faculty GetFacultie(int id)
         {
-            return db.Faculty.FirstOrDefault(f => f.Id == id);
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Faculty.FirstOrDefault(f => f.Id == id);
+            }
         }
         public Week GetWeekNumber(byte id)
         {
-            return db.Week.FirstOrDefault(w=>w.Id == id);
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Week.FirstOrDefault(w => w.Id == id);
+            }
         }
     }
 }

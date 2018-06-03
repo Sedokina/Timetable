@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using Timetable.GeneratorService;
 using Timetable.DomainCore.Domain;
 using Timetable.DomainCore.Models;
+using Timetable.GeneratorService;
 
 namespace Timetable.GeneratorLogic
 {

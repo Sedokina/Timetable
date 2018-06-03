@@ -5,16 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Timetable.DAL;
 
 namespace Timetable.GeneratorService
 {
     public partial class GeneratorServiceImpl
     {
-        ScheduleKSTUContext db;
-        public GeneratorServiceImpl()
-        {
-            db = new ScheduleKSTUContext();
-        }
+
+        public GeneratorServiceImpl() { }
 
         /*
          * Load
@@ -22,15 +20,20 @@ namespace Timetable.GeneratorService
          */
         public List<Raschasovka> GetFlawsFromLoad()
         {
-            return db.Raschasovka.Where(load => load.Potok != null).ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Raschasovka.Where(load => load.Potok != null).ToList();
+            }
         }
 
         public List<Raschasovka> GetGroupsLoadForCurrentSemester()
         {
-
-            return db.Raschasovka.Where(load => load.Semester.Id == GetSemesterByName("Весенний").Id)
-                .Include(l=>l.RaschasovkaWeeks)
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Raschasovka.Where(load => load.Semester.Id == GetSemesterByName("Весенний").Id)
+                .Include(l => l.RaschasovkaWeeks)
                 .OrderBy(load => load.Course.Number).ToList();
+            }
         }
         /*
          * Semester
@@ -38,22 +41,28 @@ namespace Timetable.GeneratorService
          */
         public Semesters GetSemesterByName(string semesterName)
         {
-            Semesters semester = db.Semesters.FirstOrDefault(sem => sem.Name == semesterName);
-            return new Semesters
+            using (var db = new ScheduleKSTUContext())
             {
-                Id = semester.Id,
-                Name = semester.Name
-            };
+                Semesters semester = db.Semesters.FirstOrDefault(sem => sem.Name == semesterName);
+                return new Semesters
+                {
+                    Id = semester.Id,
+                    Name = semester.Name
+                };
+            }
         }
 
         public Semesters GetCurrentSemester()
         {
-            string semesterName;
-            if (DateTime.Now.Month / 6 >= 1)
-                semesterName = "Осенний";
-            else
-                semesterName = "Весенний";
-            return db.Semesters.FirstOrDefault(s => s.Name == semesterName);
+            using (var db = new ScheduleKSTUContext())
+            {
+                string semesterName;
+                if (DateTime.Now.Month / 6 >= 1)
+                    semesterName = "Осенний";
+                else
+                    semesterName = "Весенний";
+                return db.Semesters.FirstOrDefault(s => s.Name == semesterName);
+            }
         }
 
         /*
@@ -63,23 +72,9 @@ namespace Timetable.GeneratorService
 
         public List<Auditorium> GetAuditoriumsForDepartment(short departmentId)
         {
-            return db.Auditorium.Where(a => a.DepartmentId == departmentId).Select(a => new Auditorium
+            using (var db = new ScheduleKSTUContext())
             {
-                Id = a.Id,
-                AuditoriumTypeId = a.AuditoriumTypeId,
-                BuildingId = a.BuildingId,
-                DepartmentId = a.DepartmentId,
-                Name = a.Name,
-                Number = a.Number,
-                SeatingCapacity = a.SeatingCapacity
-            }).ToList();
-        }
-
-        public List<Auditorium> GetDepartmentAuditoriumsForSubjectType(short departmentId, byte subjectTypeId)
-        {
-            var auditoriumsSubjects = db.AuditoriumSubjectTypes.Where(ast => ast.SubjectTypeId == subjectTypeId).ToList();
-            return db.Auditorium.Where(a => a.DepartmentId == departmentId &&
-                auditoriumsSubjects.Exists(ast => ast.AuditoriumTypeId == a.AuditoriumTypeId)).Select(a => new Auditorium
+                return db.Auditorium.Where(a => a.DepartmentId == departmentId).Select(a => new Auditorium
                 {
                     Id = a.Id,
                     AuditoriumTypeId = a.AuditoriumTypeId,
@@ -89,6 +84,26 @@ namespace Timetable.GeneratorService
                     Number = a.Number,
                     SeatingCapacity = a.SeatingCapacity
                 }).ToList();
+            }
+        }
+
+        public List<Auditorium> GetDepartmentAuditoriumsForSubjectType(short departmentId, byte subjectTypeId)
+        {
+            using (var db = new ScheduleKSTUContext())
+            {
+                var auditoriumsSubjects = db.AuditoriumSubjectTypes.Where(ast => ast.SubjectTypeId == subjectTypeId).ToList();
+                return db.Auditorium.Where(a => a.DepartmentId == departmentId &&
+                    auditoriumsSubjects.Exists(ast => ast.AuditoriumTypeId == a.AuditoriumTypeId)).Select(a => new Auditorium
+                    {
+                        Id = a.Id,
+                        AuditoriumTypeId = a.AuditoriumTypeId,
+                        BuildingId = a.BuildingId,
+                        DepartmentId = a.DepartmentId,
+                        Name = a.Name,
+                        Number = a.Number,
+                        SeatingCapacity = a.SeatingCapacity
+                    }).ToList();
+            }
         }
 
         /*
@@ -99,16 +114,23 @@ namespace Timetable.GeneratorService
         
         public List<Faculty> GetFacultiesView()
         {
-            return db.Faculty.Select(f=>new Faculty {
-                Id = f.Id,
-                FullName = f.FullName,
-                Name = f.Name
-            }).ToList();
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Faculty.Select(f => new Faculty
+                {
+                    Id = f.Id,
+                    FullName = f.FullName,
+                    Name = f.Name
+                }).ToList();
+            }
         }
 
         public byte GetCurrentWeek()
         {
-            return db.Week.FirstOrDefault().Id;
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Week.FirstOrDefault().Id;
+            }
         }
 
         //public List<TeachersLoadWeight> GetTeachersLoadRate()
@@ -126,8 +148,11 @@ namespace Timetable.GeneratorService
         {
             //return db.Raschasovka.GroupBy(r => new { r.TeacherId, r.TotalHoursForSemestr })
             //    .Select(r => new RateData { Rate = r.Count() + r.Key.TotalHoursForSemestr, Id = r.Key.TeacherId }).ToList();
-            return db.Raschasovka.GroupBy(r => r.TeacherId)
+            using (var db = new ScheduleKSTUContext())
+            {
+                return db.Raschasovka.GroupBy(r => r.TeacherId)
                 .Select(r => new RateData { Rate = r.Count(), Id = r.Key }).ToList();
+            }
         }
     }
 }

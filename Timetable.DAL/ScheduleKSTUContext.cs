@@ -1,7 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
+using Timetable.DomainCore.Domain;
 
-namespace Timetable.DomainCore.Domain
+namespace Timetable.DAL
 {
     public partial class ScheduleKSTUContext : DbContext
     {
@@ -12,7 +13,7 @@ namespace Timetable.DomainCore.Domain
         public virtual DbSet<Course> Course { get; set; }
         public virtual DbSet<CourseGroup> CourseGroup { get; set; }
         public virtual DbSet<Criteria> Criteria { get; set; }
-        public virtual DbSet<DayOfWeek> DayOfWeek { get; set; }
+        public virtual DbSet<DomainCore.Domain.DayOfWeek> DayOfWeek { get; set; }
         public virtual DbSet<Department> Department { get; set; }
         public virtual DbSet<Faculty> Faculty { get; set; }
         public virtual DbSet<GenSubjectClass> GenSubjectClass { get; set; }
@@ -148,7 +149,7 @@ namespace Timetable.DomainCore.Domain
                 entity.Property(e => e.Rate).HasDefaultValueSql("((0))");
             });
 
-            modelBuilder.Entity<DayOfWeek>(entity =>
+            modelBuilder.Entity<DomainCore.Domain.DayOfWeek>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
