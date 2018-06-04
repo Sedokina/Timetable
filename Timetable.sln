@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timetable.WebAPI", "Timetab
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timetable.WebApp", "Timetable.WebApp\Timetable.WebApp.csproj", "{8CB6A4BF-98F5-408F-A1C1-3AB6F8EFC884}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timetable.GeneratorService.Tests", "Timetable.GeneratorService.Tests\Timetable.GeneratorService.Tests.csproj", "{0B9B5A3F-22C0-4CF9-8B21-DBD67A0E68B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timetable.GeneratorService.Tests", "Timetable.GeneratorService.Tests\Timetable.GeneratorService.Tests.csproj", "{0B9B5A3F-22C0-4CF9-8B21-DBD67A0E68B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
