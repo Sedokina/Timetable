@@ -43,15 +43,15 @@ namespace Timetable.GeneratorLogic
             TeachersRate(services.GetTeachersLoadRate());
             //Выборка по критерию нагруженности
             var query2 = query.Join(services.GetTeachersWeight(), l => l.load.TeacherId, w => w.Id, (l, w) =>
-                new { l.load, l.TeacherWeight, TeachersLoadWeight = w.Weight });
+                    new { l.load, l.TeacherWeight, TeachersLoadWeight = w.Weight });
             //Выборка критерия типа предмета
             var LoadWithWeights = query2.Join(services.GetSubjectClassWeight(), l => l.load.SubjectClassId, w => w.Id, (l, w) =>
                 new { l.load, l.TeacherWeight, l.TeachersLoadWeight, SubjectClassWeight = w.Weight });
             Console.WriteLine();
             //Критерии умножаются на приоритет и суммируются
-            float SubjectClassPriority = 10;
-            float TeacherPriority = 10;
-            float TeachersLoadPriority = 10;
+            float SubjectClassPriority = 9.5f;
+            float TeacherPriority = 7;
+            float TeachersLoadPriority = 10f;
             var LoadWeighted = LoadWithWeights.Select(l => new { l.load, FullWeight = l.SubjectClassWeight * SubjectClassPriority +
                 l.TeacherWeight * TeacherPriority + l.TeachersLoadWeight * TeachersLoadPriority }).OrderByDescending(l => l.FullWeight);
             //!!!!!!! надо исключить таймслоты по неделям, т.е. запихнуть сюда таймслоты которые доступны

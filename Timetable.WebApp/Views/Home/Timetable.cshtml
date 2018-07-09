@@ -2,10 +2,8 @@
 
 @{
     ViewData["Title"] = "Timetable";
+    Layout = "~/Views/_Layout.cshtml";
 }
-<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 <h2>@ViewBag.Faculty.Name, неделя @ViewBag.Week.Number</h2>
 @{
     var groupList = Model.GroupBy(m => m.Group.Id).Select(m => m.First()).OrderBy(m => m.Group.Name).ToList();

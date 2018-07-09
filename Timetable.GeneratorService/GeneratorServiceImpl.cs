@@ -154,5 +154,18 @@ namespace Timetable.GeneratorService
                 .Select(r => new RateData { Rate = r.Count(), Id = r.Key }).ToList();
             }
         }
+
+        //public List<RateData> GetTeachersLoadRate()
+        //{
+        //    //return db.Raschasovka.GroupBy(r => new { r.TeacherId, r.TotalHoursForSemestr })
+        //    //    .Select(r => new RateData { Rate = r.Count() + r.Key.TotalHoursForSemestr, Id = r.Key.TeacherId }).ToList();
+        //    using (var db = new ScheduleKSTUContext())
+        //    {
+        //        return db.Raschasovka.GroupBy(r => new { r.TeacherId, r.SubjectId, r.TotalHoursForSemestr })
+        //        .Select(r => new RateData { Rate = r.Count() + r.Key.TotalHoursForSemestr / 64, Id = r.Key.TeacherId * (int)r.Key.SubjectId * r.Key.TotalHoursForSemestr }).ToList();
+        //    }
+        //}
+
+        //teacherId, subjectId, 
     }
 }
