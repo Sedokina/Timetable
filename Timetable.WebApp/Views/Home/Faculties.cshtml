@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Timetable";
+    Layout = "~/Views/_Layout.cshtml";
+}
+<div class="alert alert-warning">
+    <strong>Внимание критерий "Лекционные занятия в первой половине смены" не выполняется</strong> Факультет -Имя-, Группа -Имя-, День -День недели-, Время -Время занятия-
+</div>
+
+<div class="alert alert-danger">
+    <strong>Критерий "Больше 1 занятия в день у группы" не выполняется</strong> Факультет -Имя-, Группа -Имя-, День -День недели-, Время -Время занятия-
+</div>
+
+<div class="container">
+    <h4>Недели: @Html.DropDownList("Id", ViewBag.Weeks as SelectList, "--№ недели--", new { @id = "ddlWeeks", @class = "form-control" })</h4>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>
+                    Факультет
+                </th>
+                <th>
+                    Полное наименование факультета
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.Faculties)
+            {
+                <tr>
+                    <td>
+                        <a href="/home/timetable/@item.Id">@item.Name </a>
+                    </td>
+                    <td>
+                        <a href="/home/timetable/@item.Id">@item.FullName</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+
+    function getSelectedValue() {
+
+        alert("aaaaaaaaaaaa");
+        alert($("#ddlWeeks").val());
+
+    }
+
+    function getSelectedText() {
+
+        alert($("#ddlWeeks option:selected").text());
+
+    }
+
+</script>

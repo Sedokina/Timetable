@@ -1,0 +1,12 @@
+D:\Timetable\Timetable\Timetable.DAL\bin\Debug\netcoreapp2.0\Timetable.DAL.deps.json
+D:\Timetable\Timetable\Timetable.DAL\bin\Debug\netcoreapp2.0\Timetable.DAL.dll
+D:\Timetable\Timetable\Timetable.DAL\bin\Debug\netcoreapp2.0\Timetable.DAL.pdb
+D:\Timetable\Timetable\Timetable.DAL\bin\Debug\netcoreapp2.0\Timetable.DomainCore.dll
+D:\Timetable\Timetable\Timetable.DAL\bin\Debug\netcoreapp2.0\Timetable.DomainCore.pdb
+D:\Timetable\Timetable\Timetable.DAL\obj\Debug\netcoreapp2.0\Timetable.DAL.csprojResolveAssemblyReference.cache
+D:\Timetable\Timetable\Timetable.DAL\obj\Debug\netcoreapp2.0\Timetable.DAL.csproj.CoreCompileInputs.cache
+D:\Timetable\Timetable\Timetable.DAL\obj\Debug\netcoreapp2.0\Timetable.DAL.AssemblyInfoInputs.cache
+D:\Timetable\Timetable\Timetable.DAL\obj\Debug\netcoreapp2.0\Timetable.DAL.AssemblyInfo.cs
+D:\Timetable\Timetable\Timetable.DAL\obj\Debug\netcoreapp2.0\Timetable.DAL.csproj.CopyComplete
+D:\Timetable\Timetable\Timetable.DAL\obj\Debug\netcoreapp2.0\Timetable.DAL.dll
+D:\Timetable\Timetable\Timetable.DAL\obj\Debug\netcoreapp2.0\Timetable.DAL.pdb

@@ -1,0 +1,9 @@
+D:\Timetable\Timetable\Timetable\bin\Debug\netcoreapp2.0\Timetable.deps.json
+D:\Timetable\Timetable\Timetable\bin\Debug\netcoreapp2.0\Timetable.dll
+D:\Timetable\Timetable\Timetable\obj\Debug\netcoreapp2.0\Timetable.csprojResolveAssemblyReference.cache
+D:\Timetable\Timetable\Timetable\obj\Debug\netcoreapp2.0\Timetable.csproj.CoreCompileInputs.cache
+D:\Timetable\Timetable\Timetable\obj\Debug\netcoreapp2.0\Timetable.AssemblyInfoInputs.cache
+D:\Timetable\Timetable\Timetable\obj\Debug\netcoreapp2.0\Timetable.AssemblyInfo.cs
+D:\Timetable\Timetable\Timetable\bin\Debug\netcoreapp2.0\Timetable.pdb
+D:\Timetable\Timetable\Timetable\obj\Debug\netcoreapp2.0\Timetable.dll
+D:\Timetable\Timetable\Timetable\obj\Debug\netcoreapp2.0\Timetable.pdb
